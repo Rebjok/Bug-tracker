@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.101.0">
-    <title>Dashboard Template · Bootstrap v5.2</title>
+    <title>Dashboard</title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/dashboard/">
 
@@ -93,7 +93,7 @@
 
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
           <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#"><h4>Bugzy</h4></a>
-          <button class="btn btn-primary" onclick="window.location.href='{{ url_for('ticket', action='new') }}';">New Ticket</button>
+          <button class="btn btn-primary" onclick="window.location.href='{{ url_for('modify_ticket', action='new') }}';">New Ticket</button>
           <form class="d-flex" role="search">
               <input class="form-control me-2 p-1" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-primary pr-1" type="submit">Search</button>
@@ -196,11 +196,11 @@
               <div class="container-fluid">
                     <div class="row mb-3">
                         <div class="col-md-6 col-xl-3 mb-2">
-                            <div class="card">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-6">
-                                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Campaign Sent">Active Projects</h5>
+                                            <h5 class="text-muted fw-normal mt-0 text-wrap" title="Active Projects">Active Projects</h5>
                                             <h3 class="my-2 py-1">0</h3>
                                         </div>
                                     </div>
@@ -209,11 +209,11 @@
                         </div>
 
                         <div class="col-md-6 col-xl-3 mb-2">
-                            <div class="card">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-6">
-                                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="New Leads">Total Tickets</h5>
+                                            <h5 class="text-muted fw-normal mt-0 text-wrap" title="Total Tickets">Total Tickets</h5>
                                             <h3 class="my-2 py-1">8</h3>
                                         </div>
                                     </div>
@@ -222,11 +222,11 @@
                         </div>
 
                         <div class="col-md-6 col-xl-3 mb-2">
-                            <div class="card">
+                            <div class="card h-100">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-6">
-                                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Deals">Unassigned Tickets</h5>
+                                            <h5 class="text-muted fw-normal mt-0" title="Unassigned Tickets">Unassigned Tickets</h5>
                                             <h3 class="my-2 py-1">2</h3>
                                         </div>
                                     </div>
@@ -235,11 +235,11 @@
                         </div>
 
                         <div class="col-md-6 col-xl-3 mb-2">
-                            <div class="card">
+                            <div class="card  h-100">
                                 <div class="card-body">
                                     <div class="row align-items-center">
                                         <div class="col-6">
-                                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Booked Revenue">Analytics</h5>
+                                            <h5 class="text-muted fw-normal mt-0 text-wrap" title="Project Analytics">Project Analytics</h5>
                                             <h3 class="my-2 py-1">11</h3>
                                         </div>
                                     </div>

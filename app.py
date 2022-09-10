@@ -99,7 +99,7 @@ def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/ticket/<action>', methods=['GET', 'POST'])
-def ticket(action):
+def modify_ticket(action):
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['ckeditor']
@@ -110,11 +110,23 @@ def ticket(action):
         print(f'{title}, {description}, {ticketType}, {priority}, {status}, {developer}')
         return redirect(url_for('dashboard'))
     else:
-        return render_template('ticket.html', action=action)
+        return render_template('modify-ticket.html', action=action)
 
 @app.route('/projects', methods=['GET'])
 def projects_dashboard():
     return render_template('project-dashboard.html')
+
+@app.route('/project-details', methods=['GET'])
+def project_details():
+    return render_template('project-details.html')
+
+@app.route('/project/<action>', methods=['GET', 'POST'])
+def modify_project(action):
+    if request.method == 'POST':
+        print('project modified')
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('modify-project.html', action=action)
 
 if __name__ == '__main__':
     app.run(debug=True)

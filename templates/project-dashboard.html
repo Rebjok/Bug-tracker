@@ -35,7 +35,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr onclick="window.location.href='{{ url_for('project_details') }}';">
                   <th scope="col">Build a Movie Information Web Application</th>
                   <th scope="col">01/01/2022</th>
                   <th scope="col">
@@ -51,7 +51,7 @@
                       <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                   </th>
                 </tr>
-                <tr>
+                <tr onclick="window.location.href='{{ url_for('project_details') }}';">
                   <th scope="col">Build a Blog Website</th>
                   <th scope="col">01/07/2022</th>
                   <th scope="col">
@@ -67,7 +67,7 @@
                       <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                   </th>
                 </tr>
-                <tr>
+                <tr onclick="window.location.href='{{ url_for('project_details') }}';">
                   <th scope="col">Build a Bug Tracker</th>
                   <th scope="col">05/09/2022</th>
                   <th scope="col">
@@ -93,7 +93,7 @@
             <div class="h-100 p-5 text-bg-light rounded-3">
               <h2>New Project</h2>
               <p>Create a new Project</p>
-              <button class="btn btn-primary" type="button">New</button>
+              <button class="btn btn-primary" type="button" onclick="window.location.href='{{ url_for('modify_project', action='new') }}';">New</button>
             </div>
           </div>
           <div class="col-md-6">
