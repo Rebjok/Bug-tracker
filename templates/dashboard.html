@@ -83,6 +83,8 @@
 
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='styles/dashboard.css') }}" rel="stylesheet">
+
+<!--      Font Awesome Link-->
       <script src="https://kit.fontawesome.com/b12e1086e8.js" crossorigin="anonymous"></script>
   </head>
   <body>
@@ -91,7 +93,7 @@
 
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
           <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#"><h4>Bugzy</h4></a>
-          <button class="btn btn-primary">New Ticket</button>
+          <button class="btn btn-primary" onclick="window.location.href='{{ url_for('ticket', action='new') }}';">New Ticket</button>
           <form class="d-flex" role="search">
               <input class="form-control me-2 p-1" type="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-primary pr-1" type="submit">Search</button>
@@ -118,7 +120,7 @@
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ url_for('projects_dashboard') }}">
                       <i class="fa-regular fa-folder"></i>
                       Projects
                     </a>

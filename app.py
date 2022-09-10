@@ -2,12 +2,15 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_ckeditor import CKEditor
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'gjhadkerbouabfue'
+
+#Create CKEditor
+ckeditor = CKEditor(app)
 
 ##CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
@@ -95,6 +98,23 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/ticket/<action>', methods=['GET', 'POST'])
+def ticket(action):
+    if request.method == 'POST':
+        title = request.form['title']
+        description = request.form['ckeditor']
+        ticketType = request.form['type']
+        priority = request.form['priority']
+        status = request.form['status']
+        developer =request.form['developer']
+        print(f'{title}, {description}, {ticketType}, {priority}, {status}, {developer}')
+        return redirect(url_for('dashboard'))
+    else:
+        return render_template('ticket.html', action=action)
+
+@app.route('/projects', methods=['GET'])
+def projects_dashboard():
+    return render_template('project-dashboard.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
