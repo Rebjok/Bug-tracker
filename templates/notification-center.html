@@ -1,0 +1,31 @@
+{% extends 'dashboard-template.html' %}
+{% block  content %}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Notification Center</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="">Read</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary" onclick="">Unread</button>
+          </div>
+      </div>
+    </div>
+    <div class="container py-4">
+        <div class="card w-75" role="document">
+            <div class="card-body rounded-4 shadow">
+                {% for i in range(5) %}
+                <div class="alert alert-light border" role="alert">
+                  <div class="toast-header">
+                    <strong class="me-auto">Jennie from the block</strong>
+                    <small>11 mins ago</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                  </div>
+                  <div class="toast-body">
+                    This is a notification from Jennie
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

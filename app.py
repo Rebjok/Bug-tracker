@@ -98,6 +98,18 @@ def login():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/notification-center', methods=['GET', 'POST'])
+def notification_center():
+    return render_template('notification-center.html')
+
+@app.route('/tickets', methods=['GET'])
+def ticket_dashboard():
+    return render_template('ticket-dashboard.html')
+
+@app.route('/ticket-details', methods=['GET'])
+def ticket_details():
+    return render_template('ticket-details.html')
+
 @app.route('/ticket/<action>', methods=['GET', 'POST'])
 def modify_ticket(action):
     if request.method == 'POST':
@@ -127,6 +139,38 @@ def modify_project(action):
         return redirect(url_for('dashboard'))
     else:
         return render_template('modify-project.html', action=action)
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
+
+@app.route('/personal-info', methods=['GET', 'POST'])
+def personal_info():
+    if request.method == 'POST':
+        print('Changes Saved')
+        return redirect(url_for('personal_info'))
+    return render_template('personal-info.html')
+
+@app.route('/account-settings', methods=['GET', 'POST'])
+def account_settings():
+    if request.method == 'POST':
+        print('Changes Saved')
+        return redirect(url_for('account_settings'))
+    return render_template('account-settings.html')
+
+@app.route('/notification-settings', methods=['GET', 'POST'])
+def notification_settings():
+    if request.method == 'POST':
+        print('Changes Saved')
+        return redirect(url_for('notification_settings'))
+    return render_template('notification-settings.html')
+
+@app.route('/security-settings', methods=['GET', 'POST'])
+def security_settings():
+    if request.method == 'POST':
+        print('Changes Saved')
+        return redirect(url_for('security_settings'))
+    return render_template('security-settings.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

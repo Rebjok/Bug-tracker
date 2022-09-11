@@ -1,0 +1,84 @@
+{% extends 'dashboard-template.html' %}
+{% block content %}
+    <div class="container py-4">
+
+        <div class="p-5 mb-4 bg-light rounded-3">
+          <div class="container-fluid pb-5">
+            <h1 class="display-5 fw-bold">Tickets List</h1>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Developer</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">Deadline</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
+                  <th scope="col">Ticket 1</th>
+                  <th scope="col">Adama</th>
+                  <th scope="col">New</th>
+                  <th scope="col">Urgent</th>
+                  <th scope="col">01/01/2022</th>
+                  <th scope="col">01/02/2022</th>
+                  <th scope="col">
+                      <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"></i></button>
+                      <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
+                  </th>
+                </tr>
+                <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
+                  <th scope="col">Ticket 2</th>
+                  <th scope="col">Traore</th>
+                  <th scope="col">Testing</th>
+                  <th scope="col">Medium</th>
+                  <th scope="col">01/07/2022</th>
+                  <th scope="col">21/07/2022</th>
+                  <th scope="col">
+                      <button class="btn btn-outline-primary" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"><i class="fa-solid fa-pen-to-square"></i></button>
+                      <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
+                  </th>
+                </tr>
+                <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
+                  <th scope="col">Ticket 3</th>
+                  <th scope="col">Messi</th>
+                  <th scope="col">Development</th>
+                  <th scope="col">High</th>
+                  <th scope="col">19/08/2022</th>
+                  <th scope="col">20/09/2022</th>
+                  <th scope="col">
+                      <button class="btn btn-outline-primary" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"><i class="fa-solid fa-pen-to-square"></i></button>
+                      <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
+                  </th>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row align-items-md-stretch">
+          <div class="col-md-6">
+            <div class="h-100 p-5 text-bg-light rounded-3">
+              <h2>New Ticket</h2>
+              <p>Create a new Ticket</p>
+              <button class="btn btn-primary" type="button" onclick="window.location.href='{{ url_for('modify_ticket', action='new') }}';">New</button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="h-100 p-5 bg-light rounded-3">
+              <h2>Manage Tickets</h2>
+              <p>Manage the tickets assigned to you.</p>
+              <button class="btn btn-primary" type="button">Manage Tickets</button>
+            </div>
+          </div>
+        </div>
+
+        <footer class="pt-3 mt-4 text-muted border-top">
+          &copy; 2022
+        </footer>
+      </div>
+
+{% endblock %}
