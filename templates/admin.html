@@ -3,11 +3,233 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
       <h1 class="h2">Admin</h1>
     </div>
-    <div class="container py-4">
-        <div class="card w-75" role="document">
-            <div class="card-body rounded-4 shadow">
-                <h1>Hello World</h1>
-            </div>
+    <div class="row align-items-md-stretch my-4">
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-bg-light rounded-3">
+          <h3 class="card-title">Company Title</h3>
+          <p><em>Admin - John Doe</em></p>
+          <ul class="list-group list-group-flush">
+                <li class="list-group-item mt-3 d-flex justify-content-between">
+                    <h6>Admin</h6>
+                    <p class="text">John Doe</p>
+                </li>
+                <li class="list-group-item my-3 d-flex justify-content-between">
+                    <h6>Total members</h6>
+                    <p class="text">27</p>
+                </li>
+                <li class="list-group-item my-3 d-flex justify-content-between">
+                    <h6>Total Projects</h6>
+                    <p class="text">7</p>
+                </li>
+                <li class="list-group-item my-3 d-flex justify-content-between">
+                    <h6>Active Projects</h6>
+                    <p class="text">3</p>
+                </li>
+                <li class="list-group-item my-3 d-flex justify-content-between">
+                    <h6>Total Tickets</h6>
+                    <p class="text">45</p>
+                </li>
+                <li class="list-group-item mt-3 d-flex justify-content-between">
+                    <h6>Active Tickets</h6>
+                    <p class="text">25</p>
+                </li>
+            </ul>
         </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light rounded-3">
+            <h3 class="card-title mb-5">Members</h3>
+            <!-- Members Carousel -->
+            <div id="membersCarousel" class="carousel slide" data-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <div class="card mb-4 bg-light">
+                      <div class="card-body">
+                        <h5 class="card-title">Ticket Developer</h5>
+                        <div class="col">
+                          <i class="fa-solid fa-user"></i>
+                          <div class="col">
+                              <h4>Unassigned</h4>
+                              <button class="btn btn-primary">Assign PM</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="card mb-4 bg-dark">
+                      <div class="card-body">
+                        <h5 class="card-title">Ticket Developer</h5>
+                        <div class="col">
+                          <i class="fa-solid fa-user"></i>
+                          <div class="col">
+                              <h4>Unassigned</h4>
+                              <button class="btn btn-primary">Assign PM</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <div class="card mb-4 bg-light">
+                      <div class="card-body">
+                        <h5 class="card-title">Ticket Developer</h5>
+                        <div class="col">
+                          <i class="fa-solid fa-user"></i>
+                          <div class="col">
+                              <h4>Unassigned</h4>
+                              <button class="btn btn-primary">Assign PM</button>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <button class="carousel-control-prev" type="button" data-target="#membersCarousel" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-target="#membersCarousel" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+
+          <!-- All members -->
+          <div class="card mb-4">
+              <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                      <h5>All members</h5>
+                  </div>
+
+                  <!-- members table -->
+                  <table class="table table-hover">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">Name</th>
+                          <th scope="col">Projects</th>
+                          <th scope="col">Role</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
+                          <td>Mark</td>
+                          <td>0</td>
+                          <td>Project Manager</td>
+                        </tr>
+                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
+                          <td>Jacob</td>
+                          <td>3</td>
+                          <td>Developer</td>
+                        </tr>
+                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
+                          <td>Larry</td>
+                          <td>1</td>
+                          <td>User</td>
+                        </tr>
+                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
+                          <td>John</td>
+                          <td>2</td>
+                          <td>Admin</td>
+                        </tr>
+                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
+                          <td>Doe</td>
+                          <td>2</td>
+                          <td>Submitter</td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+     <!-- Projects and Memners -->
+    <div class="row align-items-md-stretch mb-3">
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-bg-light border rounded-3">
+          <h2>Projects</h2>
+          <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Start Date</th>
+                  <th scope="col">End Date</th>
+                  <th scope="col">Team</th>
+                  <th scope="col">Ticket Count</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="window.location.href='{{ url_for('project_details') }}';">
+                  <td>Build A Netflix Clone</td>
+                  <td>01/01/2022</td>
+                  <td>18/01/2022</td>
+                  <td>1</td>
+                  <td>7</td>
+                </tr>
+                <tr onclick="window.location.href='{{ url_for('project_details') }}';">
+                  <td>Build A Food Chain Simulation</td>
+                  <td>14/02/2022</td>
+                  <td>12/03/2022</td>
+                  <td>2</td>
+                  <td>14</td>
+                </tr>
+                <tr onclick="window.location.href='{{ url_for('project_details') }}';">
+                  <td>Build A Home Renting Application</td>
+                  <td>22/03/2022</td>
+                  <td>15/04/2022</td>
+                  <td>4</td>
+                  <td>38</td>
+                </tr>
+              </tbody>
+          </table>
+          <button class="btn btn-primary" type="button" onclick="window.location.href='{{ url_for('projects_dashboard') }}';">Manage Projects</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border rounded-3">
+          <h2>Tickets</h2>
+          <table class="table table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Title</th>
+                  <th scope="col">Developer</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Priority</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
+                  <th scope="row">Portfolio ticket 1</th>
+                  <td>Assign Dev</td>
+                  <td>New</td>
+                  <td>High</td>
+                  <td>01/09/2022</td>
+                  <td>Edit</td>
+                </tr>
+                <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
+                  <th scope="row">Portfolio ticket 2</th>
+                  <td>Assign Dev</td>
+                  <td>Unassigned</td>
+                  <td>Low</td>
+                  <td>17/07/2022</td>
+                  <td>Edit</td>
+                </tr>
+                <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
+                  <th scope="row">Portfolio Ticket 3</th>
+                  <td>Demo Dev</td>
+                  <td>Active</td>
+                  <td>Medium</td>
+                  <td>15/06/2022</td>
+                  <td>Edit</td>
+                </tr>
+              </tbody>
+          </table>
+          <button class="btn btn-primary" type="button" onclick="window.location.href='{{ url_for('ticket_dashboard') }}';">Manage Tickets</button>
+        </div>
+      </div>
     </div>
 {% endblock %}
