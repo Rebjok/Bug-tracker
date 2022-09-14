@@ -197,7 +197,7 @@
                             <div class="card ">
                               <div class="card-body">
                                   <h5>Members</h5>
-                                  <table class="table">
+                                  <table class="table table-hover">
                                       <thead class="thead-dark">
                                         <tr>
                                           <th scope="col">Name</th>
@@ -206,17 +206,17 @@
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
                                           <td>Mark</td>
                                           <td>0</td>
                                           <td>Project Manager</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
                                           <td>Jacob</td>
                                           <td>3</td>
                                           <td>Developer</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
                                           <td>Larry</td>
                                           <td>1</td>
                                           <td>User</td>
@@ -230,7 +230,7 @@
                             <div class="card">
                               <div class="card-body">
                                   <h5>Project List</h5>
-                                  <table class="table">
+                                  <table class="table table-hover">
                                       <thead class="thead-dark">
                                         <tr>
                                           <th scope="col">Name</th>
@@ -241,21 +241,21 @@
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('project_details') }}';">
                                           <td>Build A Netflix Clone</td>
                                           <td>01/01/2022</td>
                                           <td>18/01/2022</td>
                                           <td>1</td>
                                           <td>7</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('project_details') }}';">
                                           <td>Build A Food Chain Simulation</td>
                                           <td>14/02/2022</td>
                                           <td>12/03/2022</td>
                                           <td>2</td>
                                           <td>14</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('project_details') }}';">
                                           <td>Build A Home Renting Application</td>
                                           <td>22/03/2022</td>
                                           <td>15/04/2022</td>
@@ -276,7 +276,7 @@
                             <div class="card ">
                               <div class="card-body">
                                   <h5>Tickets</h5>
-                                  <table class="table">
+                                  <table class="table table-hover">
                                       <thead class="thead-dark">
                                         <tr>
                                           <th scope="col">Title</th>
@@ -288,7 +288,7 @@
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
                                           <th scope="row">Portfolio ticket 1</th>
                                           <td>Assign Dev</td>
                                           <td>New</td>
@@ -296,7 +296,7 @@
                                           <td>01/09/2022</td>
                                           <td>Edit</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
                                           <th scope="row">Portfolio ticket 2</th>
                                           <td>Assign Dev</td>
                                           <td>Unassigned</td>
@@ -304,7 +304,7 @@
                                           <td>17/07/2022</td>
                                           <td>Edit</td>
                                         </tr>
-                                        <tr>
+                                        <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
                                           <th scope="row">Portfolio Ticket 3</th>
                                           <td>Demo Dev</td>
                                           <td>Active</td>

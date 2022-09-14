@@ -172,5 +172,9 @@ def security_settings():
         return redirect(url_for('security_settings'))
     return render_template('security-settings.html')
 
+@app.route('/view-profile', methods=['GET'])
+def view_user_profile():
+    return render_template('user-page.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -87,7 +87,7 @@
 <!--        NavBar-->
 
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-          <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#"><h4>Bugzy</h4></a>
+          <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="{{ url_for('dashboard') }}"><h4>Bugzy</h4></a>
           <button class="btn btn-primary" onclick="window.location.href='{{ url_for('modify_ticket', action='new') }}';">New Ticket</button>
           <form class="d-flex" role="search">
               <input class="form-control me-2 p-1" type="search" placeholder="Search" aria-label="Search">
@@ -156,13 +156,13 @@
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('security_settings') }}">
                       <span data-feather="file-text" class="align-text-bottom"></span>
-                      Security
+                      Security Settings
                     </a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="{{ url_for('notification_settings') }}">
                       <span data-feather="file-text" class="align-text-bottom"></span>
-                      Notifications
+                      Notification Settings
                     </a>
                   </li>
                 </ul>
