@@ -10,10 +10,58 @@
                 <form method="post" action="{{ url_for('modify_ticket', action='new') }}">
                   <div class="mb-3">
                     <label for="ticketTitle" class="form-label">Title</label>
-                    <input type="text" class="form-control" id="ticketTitle" name="title" required>
+                    <input type="text" class="form-control" id="ticketTitle" name="title" placeholder="Ticket title" required>
+                    <div class="valid-feedback">
+                      Looks good!
+                    </div>
                   </div>
                   <div class="mb-3">
-                    <label for="ticketDescription" class="form-label">Description</label>
+                    <label for="project" class="form-label">Project</label>
+                    <button class="form-control btn btn-primary mb-2" id="project" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                      Assign Project
+                    </button>
+                    <!-- Projects list collapse -->
+                    <div class="collapse" id="collapseExample">
+                      <div class="card card-body">
+                        <table class="table table-hover">
+                            <thead class="thead-dark">
+                              <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Start Date</th>
+                                <th scope="col">End Date</th>
+                                <th scope="col">Team</th>
+                                <th scope="col">Ticket Count</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr onclick="window.location.href='{{ url_for('project_details') }}';">
+                                <td>Build A Netflix Clone</td>
+                                <td>01/01/2022</td>
+                                <td>18/01/2022</td>
+                                <td>1</td>
+                                <td>7</td>
+                              </tr>
+                              <tr onclick="window.location.href='{{ url_for('project_details') }}';">
+                                <td>Build A Food Chain Simulation</td>
+                                <td>14/02/2022</td>
+                                <td>12/03/2022</td>
+                                <td>2</td>
+                                <td>14</td>
+                              </tr>
+                              <tr onclick="window.location.href='{{ url_for('project_details') }}';">
+                                <td>Build A Home Renting Application</td>
+                                <td>22/03/2022</td>
+                                <td>15/04/2022</td>
+                                <td>4</td>
+                                <td>38</td>
+                              </tr>
+                            </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Description</label>
                     <!-- Load the CKEditor-->
                     {{ ckeditor.load() }}
                     <!-- create the editor-->
@@ -21,7 +69,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="deadline" class="form-label">Deadline</label>
-                    <input class="form-control" type="date">
+                    <input class="form-control" type="date" id="deadline" name="deadline">
                   </div>
                   <div class="mb-3">
                     <label for="ticketType" class="form-label">Ticket Type</label>
@@ -54,7 +102,7 @@
                   </div>
                   <div class="mb-3">
                     <label for="ticketDeveloper" class="form-label">Ticket Developer</label>
-                    <input type="text" class="form-control" id="ticketDeveloper" name="developer">
+                    <input type="text" class="form-control" id="ticketDeveloper" name="developer" placeholder="John Doe">
                   </div>
                   <div class="mb-3">
                       <button type="submit" class="btn btn-primary">Save</button>

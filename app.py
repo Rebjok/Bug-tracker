@@ -13,7 +13,7 @@ app.config['SECRET_KEY'] = 'gjhadkerbouabfue'
 ckeditor = CKEditor(app)
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///users.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///bug-tracker.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -34,7 +34,38 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(1000), nullable=False)
+    bio = db.Column(db.String(2500), nullable=True)
+    website_url = db.Column(db.String(100), nullable=True)
+    location = db.Column(db.String(500), nullable=True)
+    username = db.Column(db.String(100), nullable=False)
+    vulnerability_notification = db.Column(db.Boolean,default=True)
+    vulnerability_summary_notification = db.Column(db.Boolean, default=True)
+    comment_notification = db.Column(db.Boolean, default=True)
+    message_notification = db.Column(db.Boolean, default=False)
+    reminders_notification = db.Column(db.Boolean, default=True)
+    events_notification = db.Column(db.Boolean, default=True)
+    following_notification = db.Column(db.Boolean, default=False)
 
+class Project(db.Model):
+    __tablename__ = "projects"
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100),nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
+    deadline = db.Column(db.DateTime(timezone=True), nullable=False)
+    priority = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(100), nullable=False)
+    project_manager = db.Column(db.String(100), nullable=False)
+
+class Ticket(db.Model):
+    __tablename__ = 'tickets'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
+    deadline = db.Column(db.DateTime(timezone=True), nullable=False)
+    type = db.Column(db.String(100), nullable=False)
+    priority = db.Column(db.String(100), nullable=False)
+    status = db.Column(db.String(100), nullable=False)
+    developer = db.Column(db.String(100), nullable=True)
 
 db.create_all()
 
@@ -50,6 +81,7 @@ def register():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
+        username = request.form['username']
         if name and email and password:
             hash_and_salted_password = generate_password_hash(
                 password,
@@ -57,7 +89,7 @@ def register():
                 salt_length=8
             )
             if not User.query.filter_by(email=request.form['email']).first():
-                user = User(email=email, password=hash_and_salted_password, name=name)
+                user = User(email=email, password=hash_and_salted_password, name=name, username=username)
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
@@ -115,11 +147,14 @@ def modify_ticket(action):
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['ckeditor']
+        deadline = request.form['deadline']
         ticketType = request.form['type']
         priority = request.form['priority']
         status = request.form['status']
         developer =request.form['developer']
-        print(f'{title}, {description}, {ticketType}, {priority}, {status}, {developer}')
+        ticket = Ticket(title=title, description=description, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
+        db.session.add(ticket)
+        db.session.commit()
         return redirect(url_for('dashboard'))
     else:
         return render_template('modify-ticket.html', action=action)

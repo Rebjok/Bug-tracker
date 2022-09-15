@@ -18,10 +18,14 @@
           </div>
 
           <div class="modal-body p-5 pt-0">
-            <form class="" method="post" action="{{url_for('register')}}" enctype="multipart/form-data">
+            <form class="needs-validation" method="post" action="{{url_for('register')}}" enctype="multipart/form-data">
               <div class="form-floating mb-3">
                 <input type="text" class="form-control rounded-3" id="floatingname" placeholder="FullName" name="name">
-                <label for="floatingPassword">Full Name</label>
+                <label for="floatingname">Full Name</label>
+              </div>
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-3" id="floatingusername" placeholder="Username" name="username">
+                <label for="floatingusername">Username</label>
               </div>
               <div class="form-floating mb-3">
                 <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com" name="email">
