@@ -23,6 +23,25 @@
                     <!-- Projects list collapse -->
                     <div class="collapse" id="collapseExample">
                       <div class="card card-body">
+                        <div class="col">
+                          <input class=" me-2" id="searchValue" type="search" placeholder="Search" aria-label="Search" name="search-value">
+                          <button class="btn btn-outline-success" id="searchButton" name="search">Search</button>
+                          <script>
+                              var searchButton = document.getElementById("searchButton");
+                              searchButton.addEventListener('click', function(event) {
+                                  event.preventDefault();    // prevent page from refreshing
+                                  const searchValue = document.getElementById("searchValue").value  // grab the data inside the form fields
+                                  fetch('/search-ticket', {   // assuming the backend is hosted on the same server
+                                      method: 'POST',
+                                      body: searchValue,
+                                  }).then(function(response) {
+                                      // do something with the response if needed.
+                                      // If you want the table to be built only after the backend handles the request and replies, call buildTable() here.
+                                      console.log(response.json())
+                                  });
+                              });
+                           </script>
+                        </div>
                         <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>

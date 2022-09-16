@@ -1,10 +1,11 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_ckeditor import CKEditor
 import os
+import datetime
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'gjhadkerbouabfue'
@@ -155,9 +156,15 @@ def modify_ticket(action):
         ticket = Ticket(title=title, description=description, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
         db.session.add(ticket)
         db.session.commit()
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('ticket_details'))
     else:
         return render_template('modify-ticket.html', action=action)
+
+@app.route('/search-ticket', methods=['POST'])
+def search_ticket():
+    json_data = request.data
+    print(json_data)
+    return jsonify(message = "Success")
 
 @app.route('/projects', methods=['GET'])
 def projects_dashboard():
@@ -170,10 +177,51 @@ def project_details():
 @app.route('/project/<action>', methods=['GET', 'POST'])
 def modify_project(action):
     if request.method == 'POST':
-        print('project modified')
-        return redirect(url_for('dashboard'))
+        project_title = request.form['title']
+        description = request.form['ckeditor']
+        deadline = request.form['deadline']
+        priority = request.form['priority']
+        status = request.form['status']
+        project_manager = request.form['project-manager']
+
+        if project_title and description and deadline and priority and status:
+            if action.lower() == 'new':
+                # Check if the project name is already used
+                ## NOTE VERY IMPORTANT: THIS IS A BUG, IT SHOULD CHECK IF THE CURRENT USER HAS ANY PROJECT CALLED TITLE
+                if Project.query.filter_by(title=project_title).first():
+                    flash("There already  exists a project with this name1 Please choose another one")
+                    return redirect(url_for('modify_project', action=action))
+
+                # Check if the user has selected a project manager
+                if not project_manager:
+                    flash("Please assign a project manager for your project")
+                    return redirect(url_for('modify_project', action=action))
+
+                #Convert deadline to datetime in proper format
+                deadline = datetime.datetime.strptime(deadline, '%Y-%m-%d')
+
+                project = Project(title=project_title, description=description, deadline=deadline, priority=priority, status=status, project_manager=project_manager)
+                db.session.add(project)
+                db.session.commit()
+                return redirect(url_for('project_details'))
+
+            elif action.lower() == 'edit':
+                project = Project(title=project_title, description=description, priority=priority, status=status)
+                db.session.add(project)
+                db.session.commit()
+                return render_template('project_details')
+
+        else:
+            flash('Please provide all the fields')
+            return redirect(url_for('modify-project'))
     else:
         return render_template('modify-project.html', action=action)
+
+@app.route('/search-project', methods=['POST'])
+def search_project():
+    json_data = request.data
+    print(json_data)
+    return jsonify(message = "success 204 - No content")
 
 @app.route('/admin')
 def admin():
