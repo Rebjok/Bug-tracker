@@ -166,6 +166,7 @@ def search_ticket():
     print(json_data)
     return jsonify(message = "Success")
 
+# Ensure tp fix the projects list table button onclick
 @app.route('/projects', methods=['GET'])
 def projects_dashboard():
     return render_template('project-dashboard.html')
