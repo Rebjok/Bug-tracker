@@ -269,19 +269,39 @@ def account_settings():
             return redirect(url_for('account_settings'))
     return render_template('account-settings.html')
 
+@app.route('/security-settings', methods=['GET', 'POST'])
+def security_settings():
+    if request.method == 'POST':
+        old_password = request.form['old-password']
+        new_password = request.form['new_password']
+        confirm_password = request.form['confirm-password']
+        if old_password and new_password and confirm_password:
+            if new_password == confirm_password:
+                if check_password_hash(current_user.password, old_password):
+                    hash_and_salted_password = generate_password_hash(
+                        new_password,
+                        method='pbkdf2:sha256',
+                        salt_length=8
+                    )
+                    current_user.password = hash_and_salted_password
+                    db.session.commit()
+                    flash('Password successfully updated')
+                    redirect(url_for('security_settings'))
+                else:
+                    flash('Incorrect Old Password.')
+                    return redirect(url_for('security_settings'))
+            else:
+                flash('New Password does not match the confirmed password')
+
+        return redirect(url_for('security_settings'))
+    return render_template('security-settings.html')
+
 @app.route('/notification-settings', methods=['GET', 'POST'])
 def notification_settings():
     if request.method == 'POST':
         print('Changes Saved')
         return redirect(url_for('notification_settings'))
     return render_template('notification-settings.html')
-
-@app.route('/security-settings', methods=['GET', 'POST'])
-def security_settings():
-    if request.method == 'POST':
-        print('Changes Saved')
-        return redirect(url_for('security_settings'))
-    return render_template('security-settings.html')
 
 @app.route('/view-profile', methods=['GET'])
 def view_user_profile():

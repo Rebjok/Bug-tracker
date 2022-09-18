@@ -15,9 +15,9 @@
                 <form method="post" action="{{ url_for('security_settings') }}" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="d-block form-label">Change Password</label>
-                    <input type="text" class="form-control" placeholder="Enter your old password">
-                    <input type="text" class="form-control mt-2" placeholder="New password">
-                    <input type="text" class="form-control my-2" placeholder="Confirm new password">
+                    <input type="text" class="form-control" placeholder="Enter your old password" name="old-password">
+                    <input type="text" class="form-control mt-2" placeholder="New password" name="new-password">
+                    <input type="text" class="form-control my-2" placeholder="Confirm new password" name="confirm-password">
                     <button type="submit" class="btn btn-primary" style="min-width:32%">Change Password</button>
                   </div>
                 </form>
