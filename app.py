@@ -35,6 +35,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), nullable=False, unique=True)
     password = db.Column(db.String(100), nullable=False)
     name = db.Column(db.String(1000), nullable=False)
+    account_type = db.Column(db.String(100), nullable=False)
     bio = db.Column(db.String(2500), nullable=True)
     website_url = db.Column(db.String(100), nullable=True)
     location = db.Column(db.String(500), nullable=True)
@@ -62,6 +63,7 @@ class Ticket(db.Model):
     __tablename__ = 'tickets'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
+    project_name = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     start_date = db.Column(db.DateTime(timezone=True), nullable=False)
     deadline = db.Column(db.DateTime(timezone=True), nullable=False)
@@ -84,21 +86,23 @@ def register():
         name = request.form['name']
         email = request.form['email']
         password = request.form['password']
+        confirm_password = request.form['confirm-password']
         username = request.form['username']
-        if name and email and password:
+        account_type = request.form['account-type']
+        if name and email and password and account_type:
             hash_and_salted_password = generate_password_hash(
                 password,
                 method='pbkdf2:sha256',
                 salt_length=8
             )
             if not User.query.filter_by(email=request.form['email']).first():
-                user = User(email=email, password=hash_and_salted_password, name=name, username=username)
+                user = User(email=email, password=hash_and_salted_password, name=name, account_type=account_type,  username=username)
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
                 return redirect(url_for('dashboard'))
             else:
-                flash("You've already signed up with that email, log in instead!")
+                flash("You've already signed up with this email, log in instead!")
                 return redirect(url_for('login'))
         else:
             flash("Please fill in all fields")
@@ -128,7 +132,6 @@ def login():
     else:
         return render_template('login.html')
 
-
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     return render_template('dashboard.html')
@@ -150,13 +153,14 @@ def modify_ticket(action):
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['ckeditor']
+        project = request.form['ticket-project']
         start_date = datetime.date.today()
-        deadline = request.form['deadline']
+        deadline = datetime.datetime.strptime(request.form['deadline'], '%Y-%m-%d')
         ticketType = request.form['type']
         priority = request.form['priority']
         status = request.form['status']
         developer =request.form['developer']
-        ticket = Ticket(title=title, description=description, start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
+        ticket = Ticket(title=title, description=description, project_name=project,  start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
         db.session.add(ticket)
         db.session.commit()
         return redirect(url_for('ticket_details'))
@@ -235,15 +239,34 @@ def admin():
 @app.route('/personal-info', methods=['GET', 'POST'])
 def personal_info():
     if request.method == 'POST':
-        print('Changes Saved')
-        return redirect(url_for('personal_info'))
+        fullName = request.form['fullName']
+        bio = request.form['bio']
+        url = request.form['url']
+        location = request.form['location']
+        if fullName and bio and url and location:
+            current_user.name = fullName
+            current_user.bio = bio
+            current_user.website_url = url
+            current_user.location = location
+            db.session.commit()
+            return redirect(url_for('personal_info'))
     return render_template('personal-info.html')
 
 @app.route('/account-settings', methods=['GET', 'POST'])
 def account_settings():
     if request.method == 'POST':
-        print('Changes Saved')
-        return redirect(url_for('account_settings'))
+        username = request.form['username']
+        if username:
+            if not User.query.filter_by(username=username).first():
+                current_user.username = username
+                db.session.commit()
+                return redirect(url_for('account_settings'))
+            else:
+                flash('This username is already taken.')
+                return redirect(url_for('account_settings'))
+        else:
+            flash('Please enter a username')
+            return redirect(url_for('account_settings'))
     return render_template('account-settings.html')
 
 @app.route('/notification-settings', methods=['GET', 'POST'])
