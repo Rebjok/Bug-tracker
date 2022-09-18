@@ -52,6 +52,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100),nullable=False)
     description = db.Column(db.String(1000), nullable=False)
+    start_date = db.Column(db.DateTime(timezone=True), nullable=False)
     deadline = db.Column(db.DateTime(timezone=True), nullable=False)
     priority = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(100), nullable=False)
@@ -62,6 +63,7 @@ class Ticket(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
+    start_date = db.Column(db.DateTime(timezone=True), nullable=False)
     deadline = db.Column(db.DateTime(timezone=True), nullable=False)
     type = db.Column(db.String(100), nullable=False)
     priority = db.Column(db.String(100), nullable=False)
@@ -148,12 +150,13 @@ def modify_ticket(action):
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['ckeditor']
+        start_date = datetime.date.today()
         deadline = request.form['deadline']
         ticketType = request.form['type']
         priority = request.form['priority']
         status = request.form['status']
         developer =request.form['developer']
-        ticket = Ticket(title=title, description=description, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
+        ticket = Ticket(title=title, description=description, start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
         db.session.add(ticket)
         db.session.commit()
         return redirect(url_for('ticket_details'))
@@ -180,6 +183,7 @@ def modify_project(action):
     if request.method == 'POST':
         project_title = request.form['title']
         description = request.form['ckeditor']
+        start_date = datetime.date.today()
         deadline = request.form['deadline']
         priority = request.form['priority']
         status = request.form['status']
@@ -201,7 +205,7 @@ def modify_project(action):
                 #Convert deadline to datetime in proper format
                 deadline = datetime.datetime.strptime(deadline, '%Y-%m-%d')
 
-                project = Project(title=project_title, description=description, deadline=deadline, priority=priority, status=status, project_manager=project_manager)
+                project = Project(title=project_title, description=description, start_date=start_date, deadline=deadline, priority=priority, status=status, project_manager=project_manager)
                 db.session.add(project)
                 db.session.commit()
                 return redirect(url_for('project_details'))
