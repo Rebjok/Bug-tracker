@@ -299,7 +299,48 @@ def security_settings():
 @app.route('/notification-settings', methods=['GET', 'POST'])
 def notification_settings():
     if request.method == 'POST':
-        print('Changes Saved')
+        vul_notifications = request.form.get('vul_notifications')
+        vul_summary = request.form.get('vul_summary')
+        comments = request.form.get('comments')
+        people_updates = request.form.get('people-updates')
+        reminders = request.form.get('reminders')
+        events = request.form.get('events')
+        following = request.form.get('following')
+        if vul_notifications:
+            current_user.vulnerability_notification = True
+        else:
+            current_user.vulnerability_notification = False
+
+        if vul_summary:
+            current_user.vulnerability_summary_notification = True
+        else:
+            current_user.vulnerability_summary_notification = False
+
+        if comments:
+            current_user.comment_notification = True
+        else:
+            current_user.comment_notification = False
+
+        if people_updates:
+            current_user.message_notification = True
+        else:
+            current_user.message_notification = False
+
+        if reminders:
+            current_user.reminders_notification = True
+        else:
+            current_user.reminders_notification = False
+
+        if following:
+            current_user.events_notification = True
+        else:
+            current_user.events_notification = False
+
+        if events:
+            current_user.following_notification = True
+        else:
+            current_user.following_notification = False
+        db.session.commit()
         return redirect(url_for('notification_settings'))
     return render_template('notification-settings.html')
 
