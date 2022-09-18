@@ -293,7 +293,7 @@ def account_settings():
 def security_settings():
     if request.method == 'POST':
         old_password = request.form['old-password']
-        new_password = request.form['new_password']
+        new_password = request.form['new-password']
         confirm_password = request.form['confirm-password']
         if old_password and new_password and confirm_password:
             if new_password == confirm_password:
@@ -312,6 +312,7 @@ def security_settings():
                     return redirect(url_for('security_settings'))
             else:
                 flash('New Password does not match the confirmed password')
+                return redirect(url_for('security_settings'))
 
         return redirect(url_for('security_settings'))
     return render_template('security-settings.html')

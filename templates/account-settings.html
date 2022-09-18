@@ -14,7 +14,7 @@
                 <form method="post" action="{{ url_for('account_settings') }}" enctype="multipart/form-data">
                   <div class="form-group">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control mb-2" id="username" name="username" aria-describedby="usernameHelp" placeholder="Enter your username" value="kennethvaldez">
+                    <input type="text" class="form-control mb-2" id="username" name="username" aria-describedby="usernameHelp" placeholder="Enter your username" value="{{current_user.username}}">
                     <small id="usernameHelp" class="mb-2 form-text text-muted">After changing your username, your old username becomes available for anyone else to claim.</small>
                     <button class="form-control btn btn-primary mb-3" type="submit">Change</button>
                   </div>
