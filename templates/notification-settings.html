@@ -16,11 +16,11 @@
                     <label class="d-block mb-0">Security Alerts</label>
                     <div class="small text-muted mb-3">Receive security alert notifications via email</div>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="vul_notifications" class="custom-control-input" id="customCheck1" checked="">
+                      <input type="checkbox" name="vul_notifications" class="custom-control-input" id="customCheck1" {{ "checked" if current_user.vulnerability_notification}}>
                       <label class="custom-control-label" for="customCheck1">Email each time a vulnerability is found</label>
                     </div>
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="vul_summary" class="custom-control-input" id="customCheck2" checked="">
+                      <input type="checkbox" name="vul_summary" class="custom-control-input" id="customCheck2" {{ "checked" if current_user.vulnerability_summary_notification}}>
                       <label class="custom-control-label" for="customCheck2">Email a digest summary of vulnerability</label>
                     </div>
                   </div>
@@ -30,35 +30,35 @@
                       <li class="list-group-item has-icon">
                         Comments
                         <div class="custom-control custom-control-nolabel custom-switch ml-auto">
-                          <input type="checkbox" name="comments" class="custom-control-input" id="customSwitch1" checked="">
+                          <input type="checkbox" name="comments" class="custom-control-input" id="customSwitch1" {{ "checked" if current_user.comment_notification}}>
                           <label class="custom-control-label" for="customSwitch1"></label>
                         </div>
                       </li>
                       <li class="list-group-item has-icon">
                         Updates From People
                         <div class="custom-control custom-control-nolabel custom-switch ml-auto">
-                          <input type="checkbox" class="custom-control-input" name="people-updates" id="customSwitch2">
+                          <input type="checkbox" class="custom-control-input" name="people-updates" id="customSwitch2" {{ "checked" if current_user.message_notification}}>
                           <label class="custom-control-label" for="customSwitch2"></label>
                         </div>
                       </li>
                       <li class="list-group-item has-icon">
                         Reminders
                         <div class="custom-control custom-control-nolabel custom-switch ml-auto">
-                          <input type="checkbox" name="reminders" class="custom-control-input" id="customSwitch3" checked="">
+                          <input type="checkbox" name="reminders" class="custom-control-input" id="customSwitch3" {{ "checked" if current_user.reminders_notification }}>
                           <label class="custom-control-label" for="customSwitch3"></label>
                         </div>
                       </li>
                       <li class="list-group-item has-icon">
                         Events
                         <div class="custom-control custom-control-nolabel custom-switch ml-auto">
-                          <input type="checkbox" name="events" class="custom-control-input" id="customSwitch4" checked="">
+                          <input type="checkbox" name="events" class="custom-control-input" id="customSwitch4" {{ "checked" if current_user.events_notification }}>
                           <label class="custom-control-label" for="customSwitch4"></label>
                         </div>
                       </li>
                       <li class="list-group-item has-icon">
                         Pages You Follow
                         <div class="custom-control custom-control-nolabel custom-switch ml-auto">
-                          <input type="checkbox" name="following" class="custom-control-input" id="customSwitch5">
+                          <input type="checkbox" name="following" class="custom-control-input" id="customSwitch5" {{ "checked" if current_user.following_notification }}>
                           <label class="custom-control-label" for="customSwitch5"></label>
                         </div>
                       </li>

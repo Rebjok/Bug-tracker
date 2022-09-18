@@ -132,6 +132,26 @@ def login():
     else:
         return render_template('login.html')
 
+@app.route('/login-demo/<user>', methods=['GET'])
+def login_demo(user):
+    if user.lower() == 'admin':
+        email = 'demo.admin@email.com'
+        user = User.query.filter_by(email=email).first()
+        if user:
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        else:
+            print('error logging in demo admin')
+            return redirect(url_for('login'))
+    elif user.lower() == 'pm':
+        pass
+    elif user.lower() == 'developer':
+        pass
+    elif user.lower() == 'user':
+        pass
+    elif user.lower() == 'submitter':
+        pass
+
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     return render_template('dashboard.html')
@@ -331,12 +351,12 @@ def notification_settings():
         else:
             current_user.reminders_notification = False
 
-        if following:
+        if events:
             current_user.events_notification = True
         else:
             current_user.events_notification = False
 
-        if events:
+        if following:
             current_user.following_notification = True
         else:
             current_user.following_notification = False
