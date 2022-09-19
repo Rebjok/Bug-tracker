@@ -49,6 +49,8 @@ class User(UserMixin, db.Model):
     # This will act like a List of ticket objects attached to each User.
     # The "developer" refers to the developer property in the Ticket class.
     tickets = relationship("Ticket", back_populates="developer")
+    # This will act like a List of projects managed by each User.
+    projects_managed = relationship("Project", back_populates="project_manager")
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -59,7 +61,10 @@ class Project(db.Model):
     deadline = db.Column(db.DateTime(timezone=True), nullable=False)
     priority = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(100), nullable=False)
-    project_manager = db.Column(db.String(100), nullable=False)
+    # Create Foreign Key, "users.id" the users refers to the tablename of User.
+    project_manager_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
+    # Create reference to the User object, the "tickets" refers to the tickets property in the User class.
+    project_manager = relationship("User", back_populates="projects_managed")
 
 class Ticket(db.Model):
     __tablename__ = 'tickets'
@@ -253,7 +258,7 @@ def modify_project(action):
                 #Convert deadline to datetime in proper format
                 deadline = datetime.datetime.strptime(deadline, '%Y-%m-%d')
 
-                project = Project(title=project_title, description=description, start_date=start_date, deadline=deadline, priority=priority, status=status, project_manager=project_manager)
+                project = Project(title=project_title, description=description, start_date=start_date, deadline=deadline, priority=priority, status=status, project_manager_id=project_manager)
                 db.session.add(project)
                 db.session.commit()
                 return redirect(url_for('project_details'))
@@ -268,7 +273,8 @@ def modify_project(action):
             flash('Please provide all the fields')
             return redirect(url_for('modify-project'))
     else:
-        return render_template('modify-project.html', action=action)
+        users = User.query.all()
+        return render_template('modify-project.html', action=action, users=users)
 
 #This route is called when the user searches for a project when assigning a project manager for a project
 @app.route('/search-project', methods=['POST'])
