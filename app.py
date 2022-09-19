@@ -7,10 +7,11 @@ from flask_ckeditor import CKEditor
 import os
 import datetime
 
+## INITIALIZE WEB APP
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'gjhadkerbouabfue'
 
-#Create CKEditor
+#CREATE CKEDITOR
 ckeditor = CKEditor(app)
 
 ##CONNECT TO DB
@@ -22,13 +23,11 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
-##CONFIGURE TABLES
+##CREATE DATABASE TABLES
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -74,12 +73,14 @@ class Ticket(db.Model):
 
 db.create_all()
 
-
+## ROOT ROUTE
+#This is the landing page of the website
 @app.route('/')
 def landing_page():
     return render_template('landingpage.html')
 
-
+## REGISTER ROUTES
+#This page is used to register new users
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -110,7 +111,8 @@ def register():
     else:
         return render_template('register.html')
 
-
+## LOGIN ROUTES
+#This route is called when a legitimate user is logging in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -132,6 +134,7 @@ def login():
     else:
         return render_template('login.html')
 
+#This method logs in a demo user when a demo button is clicked in the login page
 @app.route('/login-demo/<user>', methods=['GET'])
 def login_demo(user):
     if user.lower() == 'admin':
@@ -152,22 +155,30 @@ def login_demo(user):
     elif user.lower() == 'submitter':
         pass
 
+##DASHBOARD ROUTE
+#This is the main dashboard that shows statistics about a stakeholder or company
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     return render_template('dashboard.html')
 
+##NOTIFICATION CENTER ROUTE
+#This page displays all the current users notifications
 @app.route('/notification-center', methods=['GET', 'POST'])
 def notification_center():
     return render_template('notification-center.html')
 
+## TICKET ROUTES
+#This is a dashboard for tickets, it displays a list of tickets associated with a stakeholder
 @app.route('/tickets', methods=['GET'])
 def ticket_dashboard():
     return render_template('ticket-dashboard.html')
 
+#This page displays details for a specific ticket
 @app.route('/ticket-details', methods=['GET'])
 def ticket_details():
     return render_template('ticket-details.html')
 
+#This page displays a form to edit a ticket or create a new one
 @app.route('/ticket/<action>', methods=['GET', 'POST'])
 def modify_ticket(action):
     if request.method == 'POST':
@@ -187,21 +198,27 @@ def modify_ticket(action):
     else:
         return render_template('modify-ticket.html', action=action)
 
+#This route is called when a user is assigning a project for a new ticket or an edited ticket
 @app.route('/search-ticket', methods=['POST'])
 def search_ticket():
     json_data = request.data
     print(json_data)
     return jsonify(message = "Success")
 
+## PROJECT ROUTES
+#This page displays  all projects in a list
+#it is a dashboard for projects
 # Ensure tp fix the projects list table button onclick
 @app.route('/projects', methods=['GET'])
 def projects_dashboard():
     return render_template('project-dashboard.html')
 
+#This route displays a page that shows details about a specific project
 @app.route('/project-details', methods=['GET'])
 def project_details():
     return render_template('project-details.html')
 
+#This route displays a form page to create a new or edit a project
 @app.route('/project/<action>', methods=['GET', 'POST'])
 def modify_project(action):
     if request.method == 'POST':
@@ -246,16 +263,21 @@ def modify_project(action):
     else:
         return render_template('modify-project.html', action=action)
 
+#This route is called when the user searches for a project when assigning a project manager for a project
 @app.route('/search-project', methods=['POST'])
 def search_project():
     json_data = request.data
     print(json_data)
     return jsonify(message = "success 204 - No content")
 
+##ADMIN TAB ROUTE
+#This route displays a company settings such as their team, projects and tickets
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
 
+##PERSONAL INFORMATION ROUTES
+#This route displays the current users profile information settings that are displayed when their profile is viewed
 @app.route('/personal-info', methods=['GET', 'POST'])
 def personal_info():
     if request.method == 'POST':
@@ -272,6 +294,8 @@ def personal_info():
             return redirect(url_for('personal_info'))
     return render_template('personal-info.html')
 
+## ACCOUNT SETTINGS ROUTE
+#This route displays the current users account settings
 @app.route('/account-settings', methods=['GET', 'POST'])
 def account_settings():
     if request.method == 'POST':
@@ -289,6 +313,8 @@ def account_settings():
             return redirect(url_for('account_settings'))
     return render_template('account-settings.html')
 
+##SECURITY SETTINGS ROUTE
+#this route displays the current users Security Settings
 @app.route('/security-settings', methods=['GET', 'POST'])
 def security_settings():
     if request.method == 'POST':
@@ -317,6 +343,8 @@ def security_settings():
         return redirect(url_for('security_settings'))
     return render_template('security-settings.html')
 
+## NOTIFICATIONS SETTINGS
+#This route displays the current users notification settings
 @app.route('/notification-settings', methods=['GET', 'POST'])
 def notification_settings():
     if request.method == 'POST':
@@ -365,6 +393,8 @@ def notification_settings():
         return redirect(url_for('notification_settings'))
     return render_template('notification-settings.html')
 
+## USER PROFILE VIEW PAGE ROUTE
+#This route displays a users profile
 @app.route('/view-profile', methods=['GET'])
 def view_user_profile():
     return render_template('user-page.html')
