@@ -159,27 +159,19 @@
                           <table class="table table-hover">
                                 <thead class="thead-dark">
                                   <tr>
+                                    <th scope="col">Id</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Projects</th>
-                                    <th scope="col">Role</th>
+                                    <th scope="col">Username</th>
                                   </tr>
                                 </thead>
                                 <tbody>
+                                {% for user in users %}
                                   <tr onclick="update_developer(this)">
-                                    <td>Mark</td>
-                                    <td>0</td>
-                                    <td>Project Manager</td>
+                                    <td>{{user.id}}</td>
+                                    <td>{{user.name}}</td>
+                                    <td>{{user.username}}</td>
                                   </tr>
-                                  <tr onclick="update_developer(this)">
-                                    <td>Jacob</td>
-                                    <td>3</td>
-                                    <td>Developer</td>
-                                  </tr>
-                                  <tr onclick="update_developer(this)">
-                                    <td>Larry</td>
-                                    <td>1</td>
-                                    <td>User</td>
-                                  </tr>
+                                {% endfor %}
                                 </tbody>
                           </table>
                           <script>

@@ -46,6 +46,9 @@ class User(UserMixin, db.Model):
     reminders_notification = db.Column(db.Boolean, default=True)
     events_notification = db.Column(db.Boolean, default=True)
     following_notification = db.Column(db.Boolean, default=False)
+    # This will act like a List of ticket objects attached to each User.
+    # The "developer" refers to the developer property in the Ticket class.
+    tickets = relationship("Ticket", back_populates="developer")
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -69,7 +72,10 @@ class Ticket(db.Model):
     type = db.Column(db.String(100), nullable=False)
     priority = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(100), nullable=False)
-    developer = db.Column(db.String(100), nullable=True)
+    # Create Foreign Key, "users.id" the users refers to the tablename of User.
+    developer_id = db.Column(db.Integer,db.ForeignKey("users.id"), nullable=True)
+    # Create reference to the User object, the "tickets" refers to the tickets property in the User class.
+    developer = relationship("User", back_populates="tickets")
 
 db.create_all()
 
@@ -191,12 +197,13 @@ def modify_ticket(action):
         priority = request.form['priority']
         status = request.form['status']
         developer =request.form['developer']
-        ticket = Ticket(title=title, description=description, project_name=project,  start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer=developer)
+        ticket = Ticket(title=title, description=description, project_name=project,  start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
         db.session.add(ticket)
         db.session.commit()
         return redirect(url_for('ticket_details'))
     else:
-        return render_template('modify-ticket.html', action=action)
+        users = User.query.all()
+        return render_template('modify-ticket.html', action=action, users=users)
 
 #This route is called when a user is assigning a project for a new ticket or an edited ticket
 @app.route('/search-ticket', methods=['POST'])
