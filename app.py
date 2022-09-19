@@ -66,11 +66,20 @@ class Project(db.Model):
     # Create reference to the User object, the "tickets" refers to the tickets property in the User class.
     project_manager = relationship("User", back_populates="projects_managed")
 
+    # This will act like a List of ticket objects attached to each User.
+    # The "developer" refers to the developer property in the Ticket class.
+    tickets = relationship("Ticket", back_populates="project_name")
+
 class Ticket(db.Model):
     __tablename__ = 'tickets'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    project_name = db.Column(db.String(100), nullable=False)
+
+    # Create a Foreign Key, "projects.id"
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.id"), nullable=True)
+    #Create reference to the Project object
+    project_name = relationship("Project", back_populates="tickets")
+
     description = db.Column(db.String(1000), nullable=False)
     start_date = db.Column(db.DateTime(timezone=True), nullable=False)
     deadline = db.Column(db.DateTime(timezone=True), nullable=False)
@@ -202,13 +211,14 @@ def modify_ticket(action):
         priority = request.form['priority']
         status = request.form['status']
         developer =request.form['developer']
-        ticket = Ticket(title=title, description=description, project_name=project,  start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
+        ticket = Ticket(title=title, description=description, project_id=project,  start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
         db.session.add(ticket)
         db.session.commit()
         return redirect(url_for('ticket_details'))
     else:
         users = User.query.all()
-        return render_template('modify-ticket.html', action=action, users=users)
+        projects = Project.query.all()
+        return render_template('modify-ticket.html', action=action, users=users, projects=projects)
 
 #This route is called when a user is assigning a project for a new ticket or an edited ticket
 @app.route('/search-ticket', methods=['POST'])

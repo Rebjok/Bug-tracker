@@ -46,35 +46,21 @@
                         <table class="table table-hover">
                             <thead class="thead-dark">
                               <tr>
+                                <th scope="col">Id</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Start Date</th>
                                 <th scope="col">End Date</th>
-                                <th scope="col">Team</th>
-                                <th scope="col">Ticket Count</th>
                               </tr>
                             </thead>
                             <tbody>
+                              {% for project in projects %}
                               <tr onclick="update_project(this)">
-                                <td>Build A Netflix Clone</td>
-                                <td>01/01/2022</td>
-                                <td>18/01/2022</td>
-                                <td>1</td>
-                                <td>7</td>
+                                <td>{{project.id}}</td>
+                                <td>{{project.title}}</td>
+                                <td>{{project.start_date}}</td>
+                                <td>{{project.deadline}}</td>
                               </tr>
-                              <tr onclick="update_project(this)">
-                                <td>Build A Food Chain Simulation</td>
-                                <td>14/02/2022</td>
-                                <td>12/03/2022</td>
-                                <td>2</td>
-                                <td>14</td>
-                              </tr>
-                              <tr onclick="update_project(this)">
-                                <td>Build A Home Renting Application</td>
-                                <td>22/03/2022</td>
-                                <td>15/04/2022</td>
-                                <td>4</td>
-                                <td>38</td>
-                              </tr>
+                              {% endfor %}
                             </tbody>
                         </table>
                         <script>
