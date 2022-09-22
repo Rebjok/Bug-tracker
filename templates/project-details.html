@@ -28,7 +28,51 @@
                   <i class="fa-solid fa-user"></i>
                   <div class="col">
                       <h4>Unassigned</h4>
-                      <button class="btn btn-primary">Assign PM</button>
+                      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#assignProjectManagerModal">Assign PM</button>
+
+                      <!-- Assign Project Manager Modal -->
+                      <div class="modal fade" id="assignProjectManagerModal" tabindex="-1" aria-labelledby="pmModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="pmModalLabel">Please select a Project Manager</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <table class="table table-hover">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Username</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr onclick="update(this)">
+                                            <td>1</td>
+                                            <td>Adama</td>
+                                            <td>adama123</td>
+                                          </tr>
+                                          <tr onclick="update(this)">
+                                            <td>2</td>
+                                            <td>John</td>
+                                            <td>johndoe99</td>
+                                          </tr>
+                                          <tr onclick="update(this)">
+                                            <td>3</td>
+                                            <td>Charles</td>
+                                            <td>kingcharlesIII</td>
+                                          </tr>
+                                        </tbody>
+                                  </table>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Select</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                   </div>
                 </div>
               </div>
@@ -51,7 +95,87 @@
                   <i class="fa-solid fa-users"></i>
                   <div class="col">
                       <h4>Unassigned</h4>
-                      <button class="btn btn-primary">Assign Team</button>
+                      <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#addTeamMemberToggle">Add Team Member</button>
+
+                      <!-- Add Team Member Modals -->
+                      <div class="modal fade" id="addTeamMemberToggle" aria-hidden="true" aria-labelledby="addTeamMemberToggleLabel" tabindex="-1">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="addTeamMemberToggleLabel">Select a Team Member</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <table class="table table-hover">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Username</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr onclick="update(this)" data-bs-target="#assignRoleModal" data-bs-toggle="modal">
+                                            <td>1</td>
+                                            <td>Adama</td>
+                                            <td>adama123</td>
+                                          </tr>
+                                          <tr onclick="update(this)" data-bs-target="#assignRoleModal" data-bs-toggle="modal">
+                                            <td>2</td>
+                                            <td>John</td>
+                                            <td>johndoe99</td>
+                                          </tr>
+                                          <tr onclick="update(this)" data-bs-target="#assignRoleModal" data-bs-toggle="modal">
+                                            <td>3</td>
+                                            <td>Charles</td>
+                                            <td>kingcharlesIII</td>
+                                          </tr>
+                                        </tbody>
+                                  </table>
+                                  <script>
+                                      function update(row){
+                                        teamMemberInput = document.getElementById('memberName');
+                                        teamMemberInput.value = row.cells[2].innerHTML;
+                                        assign_button = document.getElementById('projectManager');
+                                        assign_button.click();
+                                      }
+                                  </script>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal fade" id="assignRoleModal" aria-hidden="true" aria-labelledby="assignRoleModalLabel" tabindex="-1">
+                          <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="assignRoleModalLabel">Assign a Role</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <form method="post" action="{{ url_for('add_team_member', project_id=1) }}">
+                                <div class="modal-body">
+
+                                    <div class="mb-3">
+                                        <label for="memberName" class="form-label">Project Manager</label>
+                                        <input type="text" class="form-control mb-2" id="memberName" name="username" value="John Doe" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="role" class="form-label">Role</label>
+                                        <select class="form-select" aria-label="Default select example" id="role" name="role" required>
+                                          <option selected>Developer</option>
+                                          <option value="High">User</option>
+                                          <option value="Medium">Submitter</option>
+                                        </select>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-target="#addTeamMemberToggle" data-bs-toggle="modal">Back</button>
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                  </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+
                   </div>
                 </div>
               </div>

@@ -51,6 +51,9 @@ class User(UserMixin, db.Model):
     tickets = relationship("Ticket", back_populates="developer")
     # This will act like a List of projects managed by each User.
     projects_managed = relationship("Project", back_populates="project_manager")
+    # This will act like a List of team member objects attached to each Project.
+    # The "project" refers to the project property in the Ticket class.
+    team = relationship("Team", back_populates="user")
 
 class Project(db.Model):
     __tablename__ = "projects"
@@ -66,9 +69,15 @@ class Project(db.Model):
     # Create reference to the User object, the "tickets" refers to the tickets property in the User class.
     project_manager = relationship("User", back_populates="projects_managed")
 
-    # This will act like a List of ticket objects attached to each User.
-    # The "developer" refers to the developer property in the Ticket class.
+    # This will act like a List of ticket objects attached to each Project.
+    # The "project_name" refers to the project_name property in the Ticket class.
     tickets = relationship("Ticket", back_populates="project_name")
+
+    # This will act like a List of team member objects attached to each Project.
+    # The "project" refers to the project property in the Ticket class.
+    team = relationship("Team", back_populates="project")
+
+    #Relationship with company
 
 class Ticket(db.Model):
     __tablename__ = 'tickets'
@@ -90,6 +99,27 @@ class Ticket(db.Model):
     developer_id = db.Column(db.Integer,db.ForeignKey("users.id"), nullable=True)
     # Create reference to the User object, the "tickets" refers to the tickets property in the User class.
     developer = relationship("User", back_populates="tickets")
+
+class Team(db.Model):
+    __tablename__ = 'teams'
+    id = db.Column(db.Integer, primary_key=True)
+
+    #Relationship with projects
+    project_id = db.Column(db.Integer, db.ForeignKey("projects.id"), nullable=False)
+    project = relationship("Project", back_populates="team")
+
+    # Relationship with users
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    user = relationship("User", back_populates="team")
+
+    role = db.Column(db.String(100), nullable=False)
+
+class Company(db.Model):
+    __tablename__ = 'companies'
+    id = db.Column(db.Integer, primary_key=True)
+    #Realtionship with projects
+
+
 
 db.create_all()
 
@@ -292,6 +322,15 @@ def search_project():
     json_data = request.data
     print(json_data)
     return jsonify(message = "success 204 - No content")
+
+#This route assigns a team member to a project
+@app.route('/add-team-member/<project_id>', methods=['POST'])
+def add_team_member(project_id):
+    if request.method == 'POST':
+        role = request.form['role']
+        username = request.form['username']
+        print(f"method called: {project_id}, {username} {role}")
+        return redirect(url_for('project_details'))
 
 ##ADMIN TAB ROUTE
 #This route displays a company settings such as their team, projects and tickets
