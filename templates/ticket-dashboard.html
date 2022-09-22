@@ -18,42 +18,26 @@
                 </tr>
               </thead>
               <tbody>
+                {% for ticket in tickets %}
                 <tr>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Ticket 1</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Adama</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">New</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Urgent</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">01/01/2022</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">01/02/2022</th>
+                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                    {{ticket.title}}</th>
+                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                    {{ticket.developer.name}}</th>
+                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                    {{ticket.status}}</th>
+                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                    {{ticket.priority}}</th>
+                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                    {{ticket.start_date}}</th>
+                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                    {{ticket.deadline}}</th>
                   <th scope="col">
                       <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"></i></button>
                       <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                   </th>
                 </tr>
-                <tr>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Ticket 2</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Traore</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Testing</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Medium</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">01/07/2022</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">21/07/2022</th>
-                  <th scope="col">
-                      <button class="btn btn-outline-primary" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"><i class="fa-solid fa-pen-to-square"></i></button>
-                      <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
-                  </th>
-                </tr>
-                <tr>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Ticket 3</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Messi</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">Development</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">High</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">19/08/2022</th>
-                  <th scope="col" onclick="window.location.href='{{ url_for('ticket_details') }}';">20/09/2022</th>
-                  <th scope="col">
-                      <button class="btn btn-outline-primary" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"><i class="fa-solid fa-pen-to-square"></i></button>
-                      <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
-                  </th>
-                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>

@@ -3,21 +3,20 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
       <h1 class="h2">Profile</h1>
     </div>
-    <div class="row align-items-md-stretch">
+    <div class="row align-items-md-stretch mb-5">
       <div class="col-md-6">
         <div class="h-100 p-5 text-bg-light rounded-3">
           <div class="d-flex flex-column align-items-center text-center">
             <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
             <div class="mt-3">
-              <h4>John Doe</h4>
+              <h4>{{user.name}}</h4>
               <p class="text-secondary mb-1">Full Stack Developer</p>
-              <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+              <p class="text-muted font-size-sm">{{user.location}}</p>
               <button class="btn btn-primary">Follow</button>
               <button class="btn btn-outline-primary">Message</button>
             </div>
           </div>
-          <p class="mt-5">Swap the background-color utility and add a `.text-*` color utility to mix up the jumbotron look. Then, mix and match with additional component themes and more.</p>
-          <button class="btn btn-outline-light" type="button">Example button</button>
+          <p class="mt-5">{{user.bio|safe}}</p>
         </div>
       </div>
       <div class="col-md-6">
@@ -35,14 +34,14 @@
                         <i class="fa-solid fa-location-dot"></i>
                         <h7>Location</h7>
                     </div>
-                    <p class="text">Bay Area, San Francisco, CA</p>
+                    <p class="text">{{user.location}}</p>
                 </li>
                 <li class="list-group-item my-3 d-flex justify-content-between bg-light">
                     <div class="col">
                         <i class="fa-solid fa-link"></i>
                         <h7>Website</h7>
                     </div>
-                    <p class="text">www.bugzy.com</p>
+                    <p class="text">{{user.website_url}}</p>
                 </li>
                 <li class="list-group-item my-3 d-flex justify-content-between bg-light">
                     <div class="col">

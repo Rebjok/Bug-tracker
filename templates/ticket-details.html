@@ -12,9 +12,9 @@
     <div class="row align-items-md-stretch mt-4">
       <div class="col-md-6">
         <div class="h-100 p-5 text-bg-light rounded-3">
-          <h3 class="card-title">Ticket Title</h3>
-          <p><em>Project Title</em></p>
-          <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa ultricies mi quis hendrerit dolor. Sit amet consectetur adipiscing elit pellentesque habitant morbi</p>
+          <h3 class="card-title">{{ticket.title}}</h3>
+          <p><em>Project: {{ticket.project_name.title}}</em></p>
+          <p class="card-text">{{ticket.description|safe}}</p>
           <ul class="list-group list-group-flush">
                 <li class="list-group-item my-3 d-flex justify-content-between">
                     <h6>Deadline</h6>

@@ -78,6 +78,8 @@ class Project(db.Model):
     team = relationship("Team", back_populates="project")
 
     #Relationship with company
+    company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=True)
+    company = relationship("Company", back_populates='projects')
 
 class Ticket(db.Model):
     __tablename__ = 'tickets'
@@ -118,7 +120,7 @@ class Company(db.Model):
     __tablename__ = 'companies'
     id = db.Column(db.Integer, primary_key=True)
     #Realtionship with projects
-
+    projects = relationship("Project", back_populates="company")
 
 
 db.create_all()
@@ -209,7 +211,10 @@ def login_demo(user):
 #This is the main dashboard that shows statistics about a stakeholder or company
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
-    return render_template('dashboard.html')
+    users = User.query.all()
+    projects = Project.query.all()
+    tickets = Ticket.query.all()
+    return render_template('dashboard.html', projects=projects, users=users, tickets=tickets)
 
 ##NOTIFICATION CENTER ROUTE
 #This page displays all the current users notifications
@@ -221,12 +226,14 @@ def notification_center():
 #This is a dashboard for tickets, it displays a list of tickets associated with a stakeholder
 @app.route('/tickets', methods=['GET'])
 def ticket_dashboard():
-    return render_template('ticket-dashboard.html')
+    tickets = Ticket.query.all()
+    return render_template('ticket-dashboard.html', tickets=tickets)
 
 #This page displays details for a specific ticket
-@app.route('/ticket-details', methods=['GET'])
-def ticket_details():
-    return render_template('ticket-details.html')
+@app.route('/ticket-details/<ticket_id>', methods=['GET'])
+def ticket_details(ticket_id):
+    ticket = Ticket.query.filter_by(id=ticket_id).first()
+    return render_template('ticket-details.html', ticket=ticket)
 
 #This page displays a form to edit a ticket or create a new one
 @app.route('/ticket/<action>', methods=['GET', 'POST'])
@@ -263,12 +270,18 @@ def search_ticket():
 # Ensure tp fix the projects list table button onclick
 @app.route('/projects', methods=['GET'])
 def projects_dashboard():
-    return render_template('project-dashboard.html')
+    projects = Project.query.all()
+    return render_template('project-dashboard.html', projects=projects)
 
 #This route displays a page that shows details about a specific project
-@app.route('/project-details', methods=['GET'])
-def project_details():
-    return render_template('project-details.html')
+@app.route('/project-details/<project_id>', methods=['GET'])
+def project_details(project_id):
+    project = Project.query.filter_by(id=project_id).first()
+    users = User.query.all()
+    if project:
+        return render_template('project-details.html', project=project, users=users)
+    else:
+        return render_template('404.html')
 
 #This route displays a form page to create a new or edit a project
 @app.route('/project/<action>', methods=['GET', 'POST'])
@@ -301,13 +314,13 @@ def modify_project(action):
                 project = Project(title=project_title, description=description, start_date=start_date, deadline=deadline, priority=priority, status=status, project_manager_id=project_manager)
                 db.session.add(project)
                 db.session.commit()
-                return redirect(url_for('project_details'))
+                return redirect(url_for('project_details', project_id=project.id))
 
             elif action.lower() == 'edit':
                 project = Project(title=project_title, description=description, priority=priority, status=status)
                 db.session.add(project)
                 db.session.commit()
-                return render_template('project_details')
+                return render_template(url_for('project_details'))
 
         else:
             flash('Please provide all the fields')
@@ -329,14 +342,42 @@ def add_team_member(project_id):
     if request.method == 'POST':
         role = request.form['role']
         username = request.form['username']
-        print(f"method called: {project_id}, {username} {role}")
-        return redirect(url_for('project_details'))
+        project = Project.query.filter_by(id=project_id).first()
+        if project:
+            user = User.query.filter_by(username=username).first()
+            if user:
+                if user in project.team:
+                    flash("The user is already in the team")
+                    return redirect(url_for('project_dashboard'))
+                else:
+                    team = Team(project_id=project_id, user_id=user.id, role=role)
+                    db.session.add(team)
+                    db.session.commit()
+                    return redirect(url_for('project_details', project_id=project_id))
+            else:
+                return render_template('404.html')
+
+#This route changes a project's project manager
+@app.route('/change-pm/<project_id>/<user_id>', methods=['GET'])
+def change_pm(project_id, user_id):
+    project = Project.query.filter_by(id=project_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    if project and user:
+        project.project_manager_id = user.id
+        db.session.commit()
+        return redirect(url_for('project_details', project_id=project_id))
+    else:
+        flash("Either the project or the user do not exist")
+        return redirect(url_for('project_details', project_id=project_id))
 
 ##ADMIN TAB ROUTE
 #This route displays a company settings such as their team, projects and tickets
 @app.route('/admin')
 def admin():
-    return render_template('admin.html')
+    projects = Project.query.all()
+    users = User.query.all()
+    tickets = Ticket.query.all()
+    return render_template('admin.html', projects=projects, users=users, tickets=tickets)
 
 ##PERSONAL INFORMATION ROUTES
 #This route displays the current users profile information settings that are displayed when their profile is viewed
@@ -457,9 +498,10 @@ def notification_settings():
 
 ## USER PROFILE VIEW PAGE ROUTE
 #This route displays a users profile
-@app.route('/view-profile', methods=['GET'])
-def view_user_profile():
-    return render_template('user-page.html')
+@app.route('/view-profile<user_id>', methods=['GET'])
+def view_user_profile(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return render_template('user-page.html', user=user)
 
 if __name__ == '__main__':
     app.run(debug=True)

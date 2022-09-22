@@ -16,9 +16,9 @@
           <div class="col-4 h-100">
             <div class="card w-100 mb-4">
               <div class="card-body">
-                <h5 class="card-title">Project Name</h5>
+                <h5 class="card-title">{{project.title}}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Company Name</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <p class="card-text">{{project.description|safe}}</p>
               </div>
             </div>
             <div class="card h-100 mb-4">
@@ -26,10 +26,25 @@
                 <h5 class="card-title">Project Manager</h5>
                 <div class="col">
                   <i class="fa-solid fa-user"></i>
+                  {% if project.project_manager %}
                   <div class="col">
+                      <div class="card px-5 border h-100 mb-2">
+                        <div class="card-body">
+                          <div class="col">
+                              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                              <div  class="row">
+                                  <h3>{{project.project_manager.name}}</h3>
+                                  <small>Project Manager</small>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#assignProjectManagerModal">Change PM</button>
+                  {% else %}
                       <h4>Unassigned</h4>
                       <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#assignProjectManagerModal">Assign PM</button>
 
+                  {% endif %}
                       <!-- Assign Project Manager Modal -->
                       <div class="modal fade" id="assignProjectManagerModal" tabindex="-1" aria-labelledby="pmModalLabel" aria-hidden="true">
                           <div class="modal-dialog">
@@ -48,21 +63,13 @@
                                           </tr>
                                         </thead>
                                         <tbody>
-                                          <tr onclick="update(this)">
-                                            <td>1</td>
-                                            <td>Adama</td>
-                                            <td>adama123</td>
+                                          {% for user in users %}
+                                          <tr onclick="window.location.href='{{ url_for('change_pm', project_id=project.id, user_id=user.id) }}';">
+                                            <td>{{user.id}}</td>
+                                            <td>{{user.name}}</td>
+                                            <td>{{user.username}}</td>
                                           </tr>
-                                          <tr onclick="update(this)">
-                                            <td>2</td>
-                                            <td>John</td>
-                                            <td>johndoe99</td>
-                                          </tr>
-                                          <tr onclick="update(this)">
-                                            <td>3</td>
-                                            <td>Charles</td>
-                                            <td>kingcharlesIII</td>
-                                          </tr>
+                                          {% endfor %}
                                         </tbody>
                                   </table>
                               </div>
@@ -90,13 +97,45 @@
             <div class="card h-100 mb-4">
               <div class="card-body">
                 <h5 class="card-title">Project Team</h5>
-                <h6 class="card-subtitle mb-2 text-muted">0 Team members</h6>
+                <h6 class="card-subtitle mb-2 text-muted">{{project.team|length}} Team members</h6>
                 <div class="col">
                   <i class="fa-solid fa-users"></i>
+                  {% if project.team|length > 0 %}
                   <div class="col">
+                      <!-- Team Carousel -->
+                      <div id="carouselExampleControls" class="carousel slide mb-2" data-bs-ride="carousel">
+                          <div class="carousel-inner">
+                            {% for user in project.team %}
+                            <div class="carousel-item active bg-light">
+                                <div class="card px-5 border h-100">
+                                  <div class="card-body">
+                                      <div class="col">
+                                          <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                          <div  class="row">
+                                              <h2>{{user.name}}</h2>
+                                              <small>Developer</small>
+                                          </div>
+                                      </div>
+
+                                  </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                          </div>
+                          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                          </button>
+                          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                          </button>
+                        </div>
+                      <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#addTeamMemberToggle">Add Team Member</button>
+                  {% else %}
                       <h4>Unassigned</h4>
                       <button class="btn btn-primary" role="button" data-bs-toggle="modal" data-bs-target="#addTeamMemberToggle">Add Team Member</button>
-
+                  {% endif %}
                       <!-- Add Team Member Modals -->
                       <div class="modal fade" id="addTeamMemberToggle" aria-hidden="true" aria-labelledby="addTeamMemberToggleLabel" tabindex="-1">
                           <div class="modal-dialog modal-dialog-centered">
@@ -115,21 +154,13 @@
                                           </tr>
                                         </thead>
                                         <tbody>
+                                          {% for user in users %}
                                           <tr onclick="update(this)" data-bs-target="#assignRoleModal" data-bs-toggle="modal">
-                                            <td>1</td>
-                                            <td>Adama</td>
-                                            <td>adama123</td>
+                                            <td>{{user.id}}</td>
+                                            <td>{{user.name}}</td>
+                                            <td>{{user.username}}</td>
                                           </tr>
-                                          <tr onclick="update(this)" data-bs-target="#assignRoleModal" data-bs-toggle="modal">
-                                            <td>2</td>
-                                            <td>John</td>
-                                            <td>johndoe99</td>
-                                          </tr>
-                                          <tr onclick="update(this)" data-bs-target="#assignRoleModal" data-bs-toggle="modal">
-                                            <td>3</td>
-                                            <td>Charles</td>
-                                            <td>kingcharlesIII</td>
-                                          </tr>
+                                          {% endfor %}
                                         </tbody>
                                   </table>
                                   <script>
@@ -196,39 +227,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                      <th scope="col">Ticket 1</th>
-                      <th scope="col">Adama</th>
-                      <th scope="col">New</th>
-                      <th scope="col">Urgent</th>
-                      <th scope="col">01/01/2022</th>
+                    {% for ticket in project.tickets %}
+                    <tr onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                      <th scope="col">{{ticket.title}}</th>
+                      <th scope="col">{{ticket.developer.name}}</th>
+                      <th scope="col">{{ticket.status}}</th>
+                      <th scope="col">{{ticket.priority}}</th>
+                      <th scope="col">{{ticket.start_date}}</th>
                       <th scope="col">
                           <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                           <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                       </th>
                     </tr>
-                    <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                      <th scope="col">Ticket 2</th>
-                      <th scope="col">Traore</th>
-                      <th scope="col">Testing</th>
-                      <th scope="col">Medium</th>
-                      <th scope="col">01/07/2022</th>
-                      <th scope="col">
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
-                      </th>
-                    </tr>
-                    <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                      <th scope="col">Ticket 3</th>
-                      <th scope="col">Messi</th>
-                      <th scope="col">Development</th>
-                      <th scope="col">High</th>
-                      <th scope="col">19/08/2022</th>
-                      <th scope="col">
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
-                      </th>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
             </div>
@@ -246,39 +257,19 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                      <th scope="col">Ticket 1</th>
-                      <th scope="col">Adama</th>
-                      <th scope="col">New</th>
-                      <th scope="col">Urgent</th>
-                      <th scope="col">01/01/2022</th>
+                    {% for ticket in project.tickets %}
+                    <tr onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                      <th scope="col">{{ticket.title}}</th>
+                      <th scope="col">{{ticket.developer.name}}</th>
+                      <th scope="col">{{ticket.status}}</th>
+                      <th scope="col">{{ticket.priority}}</th>
+                      <th scope="col">{{ticket.start_date}}</th>
                       <th scope="col">
                           <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                           <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                       </th>
                     </tr>
-                    <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                      <th scope="col">Ticket 2</th>
-                      <th scope="col">Traore</th>
-                      <th scope="col">Testing</th>
-                      <th scope="col">Medium</th>
-                      <th scope="col">01/07/2022</th>
-                      <th scope="col">
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
-                      </th>
-                    </tr>
-                    <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                      <th scope="col">Ticket 3</th>
-                      <th scope="col">Messi</th>
-                      <th scope="col">Development</th>
-                      <th scope="col">High</th>
-                      <th scope="col">19/08/2022</th>
-                      <th scope="col">
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
-                      </th>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
             </div>

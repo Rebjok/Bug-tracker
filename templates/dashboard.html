@@ -201,26 +201,18 @@
                                       <thead class="thead-dark">
                                         <tr>
                                           <th scope="col">Name</th>
+                                          <th scope="col">Username</th>
                                           <th scope="col">Projects</th>
-                                          <th scope="col">Role</th>
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
-                                          <td>Mark</td>
-                                          <td>0</td>
-                                          <td>Project Manager</td>
+                                        {% for user in users %}
+                                        <tr onclick="window.location.href='{{ url_for('view_user_profile', user_id=user.id) }}';">
+                                          <td>{{user.name}}</td>
+                                          <td>{{user.username}}</td>
+                                          <td>{{user.team|length}}</td>
                                         </tr>
-                                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
-                                          <td>Jacob</td>
-                                          <td>3</td>
-                                          <td>Developer</td>
-                                        </tr>
-                                        <tr onclick="window.location.href='{{ url_for('view_user_profile') }}';">
-                                          <td>Larry</td>
-                                          <td>1</td>
-                                          <td>User</td>
-                                        </tr>
+                                        {% endfor %}
                                       </tbody>
                                     </table>
                               </div>
@@ -235,33 +227,21 @@
                                         <tr>
                                           <th scope="col">Name</th>
                                           <th scope="col">Start Date</th>
-                                          <th scope="col">End Date</th>
+                                          <th scope="col">Deadline</th>
                                           <th scope="col">Team</th>
                                           <th scope="col">Ticket Count</th>
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr onclick="window.location.href='{{ url_for('project_details') }}';">
-                                          <td>Build A Netflix Clone</td>
-                                          <td>01/01/2022</td>
-                                          <td>18/01/2022</td>
-                                          <td>1</td>
-                                          <td>7</td>
+                                        {% for project in projects %}
+                                        <tr onclick="window.location.href='{{ url_for('project_details', project_id=project.id) }}';">
+                                          <td>{{project.title}}</td>
+                                          <td>{{project.start_date}}</td>
+                                          <td>{{project.deadline}}</td>
+                                          <td>{{project.team|length}}</td>
+                                          <td>{{project.tickets|length}}</td>
                                         </tr>
-                                        <tr onclick="window.location.href='{{ url_for('project_details') }}';">
-                                          <td>Build A Food Chain Simulation</td>
-                                          <td>14/02/2022</td>
-                                          <td>12/03/2022</td>
-                                          <td>2</td>
-                                          <td>14</td>
-                                        </tr>
-                                        <tr onclick="window.location.href='{{ url_for('project_details') }}';">
-                                          <td>Build A Home Renting Application</td>
-                                          <td>22/03/2022</td>
-                                          <td>15/04/2022</td>
-                                          <td>4</td>
-                                          <td>38</td>
-                                        </tr>
+                                        {% endfor %}
                                       </tbody>
                                     </table>
                               </div>
@@ -283,35 +263,21 @@
                                           <th scope="col">Developer</th>
                                           <th scope="col">Status</th>
                                           <th scope="col">Priority</th>
-                                          <th scope="col">Status</th>
-                                          <th scope="col">Priority</th>
+                                          <th scope="col">Deadline</th>
+                                          <th scope="col">Action</th>
                                         </tr>
                                       </thead>
                                       <tbody>
-                                        <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                                          <th scope="row">Portfolio ticket 1</th>
-                                          <td>Assign Dev</td>
-                                          <td>New</td>
-                                          <td>High</td>
-                                          <td>01/09/2022</td>
+                                        {% for ticket in tickets %}
+                                        <tr onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
+                                          <th scope="row">{{ticket.title}}</th>
+                                          <td>{{ticket.developer.name}}</td>
+                                          <td>{{ticket.status}}</td>
+                                          <td>{{ticket.priority}}</td>
+                                          <td>{{ticket.deadline}}</td>
                                           <td>Edit</td>
                                         </tr>
-                                        <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                                          <th scope="row">Portfolio ticket 2</th>
-                                          <td>Assign Dev</td>
-                                          <td>Unassigned</td>
-                                          <td>Low</td>
-                                          <td>17/07/2022</td>
-                                          <td>Edit</td>
-                                        </tr>
-                                        <tr onclick="window.location.href='{{ url_for('ticket_details') }}';">
-                                          <th scope="row">Portfolio Ticket 3</th>
-                                          <td>Demo Dev</td>
-                                          <td>Active</td>
-                                          <td>Medium</td>
-                                          <td>15/06/2022</td>
-                                          <td>Edit</td>
-                                        </tr>
+                                        {% endfor %}
                                       </tbody>
                                     </table>
                               </div>
