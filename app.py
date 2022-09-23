@@ -11,7 +11,7 @@ import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'gjhadkerbouabfue'
 
-#CREATE CKEDITOR
+# CREATE CKEDITOR
 ckeditor = CKEditor(app)
 
 ##CONNECT TO DB
@@ -23,9 +23,11 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
 
 ##CREATE DATABASE TABLES
 class User(UserMixin, db.Model):
@@ -39,7 +41,7 @@ class User(UserMixin, db.Model):
     website_url = db.Column(db.String(100), nullable=True)
     location = db.Column(db.String(500), nullable=True)
     username = db.Column(db.String(100), nullable=False)
-    vulnerability_notification = db.Column(db.Boolean,default=True)
+    vulnerability_notification = db.Column(db.Boolean, default=True)
     vulnerability_summary_notification = db.Column(db.Boolean, default=True)
     comment_notification = db.Column(db.Boolean, default=True)
     message_notification = db.Column(db.Boolean, default=False)
@@ -55,10 +57,11 @@ class User(UserMixin, db.Model):
     # The "project" refers to the project property in the Ticket class.
     team = relationship("Team", back_populates="user")
 
+
 class Project(db.Model):
     __tablename__ = "projects"
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100),nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.String(1000), nullable=False)
     start_date = db.Column(db.DateTime(timezone=True), nullable=False)
     deadline = db.Column(db.DateTime(timezone=True), nullable=False)
@@ -77,9 +80,10 @@ class Project(db.Model):
     # The "project" refers to the project property in the Ticket class.
     team = relationship("Team", back_populates="project")
 
-    #Relationship with company
+    # Relationship with company
     company_id = db.Column(db.Integer, db.ForeignKey('companies.id'), nullable=True)
     company = relationship("Company", back_populates='projects')
+
 
 class Ticket(db.Model):
     __tablename__ = 'tickets'
@@ -88,7 +92,7 @@ class Ticket(db.Model):
 
     # Create a Foreign Key, "projects.id"
     project_id = db.Column(db.Integer, db.ForeignKey("projects.id"), nullable=True)
-    #Create reference to the Project object
+    # Create reference to the Project object
     project_name = relationship("Project", back_populates="tickets")
 
     description = db.Column(db.String(1000), nullable=False)
@@ -98,15 +102,16 @@ class Ticket(db.Model):
     priority = db.Column(db.String(100), nullable=False)
     status = db.Column(db.String(100), nullable=False)
     # Create Foreign Key, "users.id" the users refers to the tablename of User.
-    developer_id = db.Column(db.Integer,db.ForeignKey("users.id"), nullable=True)
+    developer_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=True)
     # Create reference to the User object, the "tickets" refers to the tickets property in the User class.
     developer = relationship("User", back_populates="tickets")
+
 
 class Team(db.Model):
     __tablename__ = 'teams'
     id = db.Column(db.Integer, primary_key=True)
 
-    #Relationship with projects
+    # Relationship with projects
     project_id = db.Column(db.Integer, db.ForeignKey("projects.id"), nullable=False)
     project = relationship("Project", back_populates="team")
 
@@ -116,23 +121,26 @@ class Team(db.Model):
 
     role = db.Column(db.String(100), nullable=False)
 
+
 class Company(db.Model):
     __tablename__ = 'companies'
     id = db.Column(db.Integer, primary_key=True)
-    #Realtionship with projects
+    # Realtionship with projects
     projects = relationship("Project", back_populates="company")
 
 
 db.create_all()
 
+
 ## ROOT ROUTE
-#This is the landing page of the website
+# This is the landing page of the website
 @app.route('/')
 def landing_page():
     return render_template('landingpage.html')
 
+
 ## REGISTER ROUTES
-#This page is used to register new users
+# This page is used to register new users
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -149,7 +157,8 @@ def register():
                 salt_length=8
             )
             if not User.query.filter_by(email=request.form['email']).first():
-                user = User(email=email, password=hash_and_salted_password, name=name, account_type=account_type,  username=username)
+                user = User(email=email, password=hash_and_salted_password, name=name, account_type=account_type,
+                            username=username)
                 db.session.add(user)
                 db.session.commit()
                 login_user(user)
@@ -163,8 +172,9 @@ def register():
     else:
         return render_template('register.html')
 
+
 ## LOGIN ROUTES
-#This route is called when a legitimate user is logging in
+# This route is called when a legitimate user is logging in
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -186,7 +196,8 @@ def login():
     else:
         return render_template('login.html')
 
-#This method logs in a demo user when a demo button is clicked in the login page
+
+# This method logs in a demo user when a demo button is clicked in the login page
 @app.route('/login-demo/<user>', methods=['GET'])
 def login_demo(user):
     if user.lower() == 'admin':
@@ -207,8 +218,9 @@ def login_demo(user):
     elif user.lower() == 'submitter':
         pass
 
+
 ##DASHBOARD ROUTE
-#This is the main dashboard that shows statistics about a stakeholder or company
+# This is the main dashboard that shows statistics about a stakeholder or company
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     users = User.query.all()
@@ -216,26 +228,30 @@ def dashboard():
     tickets = Ticket.query.all()
     return render_template('dashboard.html', projects=projects, users=users, tickets=tickets)
 
+
 ##NOTIFICATION CENTER ROUTE
-#This page displays all the current users notifications
+# This page displays all the current users notifications
 @app.route('/notification-center', methods=['GET', 'POST'])
 def notification_center():
     return render_template('notification-center.html')
 
+
 ## TICKET ROUTES
-#This is a dashboard for tickets, it displays a list of tickets associated with a stakeholder
+# This is a dashboard for tickets, it displays a list of tickets associated with a stakeholder
 @app.route('/tickets', methods=['GET'])
 def ticket_dashboard():
     tickets = Ticket.query.all()
     return render_template('ticket-dashboard.html', tickets=tickets)
 
-#This page displays details for a specific ticket
+
+# This page displays details for a specific ticket
 @app.route('/ticket-details/<ticket_id>', methods=['GET'])
 def ticket_details(ticket_id):
     ticket = Ticket.query.filter_by(id=ticket_id).first()
     return render_template('ticket-details.html', ticket=ticket)
 
-#This page displays a form to edit a ticket or create a new one
+
+# This page displays a form to edit a ticket or create a new one
 @app.route('/ticket/<action>', methods=['GET', 'POST'])
 def modify_ticket(action):
     if request.method == 'POST':
@@ -247,33 +263,37 @@ def modify_ticket(action):
         ticketType = request.form['type']
         priority = request.form['priority']
         status = request.form['status']
-        developer =request.form['developer']
-        ticket = Ticket(title=title, description=description, project_id=project,  start_date=start_date, deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
+        developer = request.form['developer']
+        ticket = Ticket(title=title, description=description, project_id=project, start_date=start_date,
+                        deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
         db.session.add(ticket)
         db.session.commit()
-        return redirect(url_for('ticket_details'))
+        return redirect(url_for('ticket_details',ticket_id=ticket.id))
     else:
         users = User.query.all()
         projects = Project.query.all()
         return render_template('modify-ticket.html', action=action, users=users, projects=projects)
 
-#This route is called when a user is assigning a project for a new ticket or an edited ticket
+
+# This route is called when a user is assigning a project for a new ticket or an edited ticket
 @app.route('/search-ticket', methods=['POST'])
 def search_ticket():
     json_data = request.data
     print(json_data)
-    return jsonify(message = "Success")
+    return jsonify(message="Success")
+
 
 ## PROJECT ROUTES
-#This page displays  all projects in a list
-#it is a dashboard for projects
+# This page displays  all projects in a list
+# it is a dashboard for projects
 # Ensure tp fix the projects list table button onclick
 @app.route('/projects', methods=['GET'])
 def projects_dashboard():
     projects = Project.query.all()
     return render_template('project-dashboard.html', projects=projects)
 
-#This route displays a page that shows details about a specific project
+
+# This route displays a page that shows details about a specific project
 @app.route('/project-details/<project_id>', methods=['GET'])
 def project_details(project_id):
     project = Project.query.filter_by(id=project_id).first()
@@ -283,7 +303,8 @@ def project_details(project_id):
     else:
         return render_template('404.html')
 
-#This route displays a form page to create a new or edit a project
+
+# This route displays a form page to create a new or edit a project
 @app.route('/project/<action>', methods=['GET', 'POST'])
 def modify_project(action):
     if request.method == 'POST':
@@ -308,10 +329,12 @@ def modify_project(action):
                     flash("Please assign a project manager for your project")
                     return redirect(url_for('modify_project', action=action))
 
-                #Convert deadline to datetime in proper format
+                # Convert deadline to datetime in proper format
                 deadline = datetime.datetime.strptime(deadline, '%Y-%m-%d')
 
-                project = Project(title=project_title, description=description, start_date=start_date, deadline=deadline, priority=priority, status=status, project_manager_id=project_manager)
+                project = Project(title=project_title, description=description, start_date=start_date,
+                                  deadline=deadline, priority=priority, status=status,
+                                  project_manager_id=project_manager)
                 db.session.add(project)
                 db.session.commit()
                 return redirect(url_for('project_details', project_id=project.id))
@@ -324,19 +347,21 @@ def modify_project(action):
 
         else:
             flash('Please provide all the fields')
-            return redirect(url_for('modify-project'))
+            return redirect(url_for('modify_project', action=action))
     else:
         users = User.query.all()
         return render_template('modify-project.html', action=action, users=users)
 
-#This route is called when the user searches for a project when assigning a project manager for a project
+
+# This route is called when the user searches for a project when assigning a project manager for a project
 @app.route('/search-project', methods=['POST'])
 def search_project():
     json_data = request.data
     print(json_data)
-    return jsonify(message = "success 204 - No content")
+    return jsonify(message="success 204 - No content")
 
-#This route assigns a team member to a project
+
+# This route assigns a team member to a project
 @app.route('/add-team-member/<project_id>', methods=['POST'])
 def add_team_member(project_id):
     if request.method == 'POST':
@@ -357,7 +382,8 @@ def add_team_member(project_id):
             else:
                 return render_template('404.html')
 
-#This route changes a project's project manager
+
+# This route changes a project's project manager
 @app.route('/change-pm/<project_id>/<user_id>', methods=['GET'])
 def change_pm(project_id, user_id):
     project = Project.query.filter_by(id=project_id).first()
@@ -370,8 +396,9 @@ def change_pm(project_id, user_id):
         flash("Either the project or the user do not exist")
         return redirect(url_for('project_details', project_id=project_id))
 
+
 ##ADMIN TAB ROUTE
-#This route displays a company settings such as their team, projects and tickets
+# This route displays a company settings such as their team, projects and tickets
 @app.route('/admin')
 def admin():
     projects = Project.query.all()
@@ -379,8 +406,9 @@ def admin():
     tickets = Ticket.query.all()
     return render_template('admin.html', projects=projects, users=users, tickets=tickets)
 
+
 ##PERSONAL INFORMATION ROUTES
-#This route displays the current users profile information settings that are displayed when their profile is viewed
+# This route displays the current users profile information settings that are displayed when their profile is viewed
 @app.route('/personal-info', methods=['GET', 'POST'])
 def personal_info():
     if request.method == 'POST':
@@ -397,8 +425,9 @@ def personal_info():
             return redirect(url_for('personal_info'))
     return render_template('personal-info.html')
 
+
 ## ACCOUNT SETTINGS ROUTE
-#This route displays the current users account settings
+# This route displays the current users account settings
 @app.route('/account-settings', methods=['GET', 'POST'])
 def account_settings():
     if request.method == 'POST':
@@ -416,8 +445,9 @@ def account_settings():
             return redirect(url_for('account_settings'))
     return render_template('account-settings.html')
 
+
 ##SECURITY SETTINGS ROUTE
-#this route displays the current users Security Settings
+# this route displays the current users Security Settings
 @app.route('/security-settings', methods=['GET', 'POST'])
 def security_settings():
     if request.method == 'POST':
@@ -446,8 +476,9 @@ def security_settings():
         return redirect(url_for('security_settings'))
     return render_template('security-settings.html')
 
+
 ## NOTIFICATIONS SETTINGS
-#This route displays the current users notification settings
+# This route displays the current users notification settings
 @app.route('/notification-settings', methods=['GET', 'POST'])
 def notification_settings():
     if request.method == 'POST':
@@ -496,12 +527,14 @@ def notification_settings():
         return redirect(url_for('notification_settings'))
     return render_template('notification-settings.html')
 
+
 ## USER PROFILE VIEW PAGE ROUTE
-#This route displays a users profile
+# This route displays a users profile
 @app.route('/view-profile<user_id>', methods=['GET'])
 def view_user_profile(user_id):
     user = User.query.filter_by(id=user_id).first()
     return render_template('user-page.html', user=user)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
