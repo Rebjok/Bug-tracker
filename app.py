@@ -218,6 +218,11 @@ def login_demo(user):
     elif user.lower() == 'submitter':
         pass
 
+#This method logs a user out
+@app.route("/logout", methods=['GET'])
+def log_out():
+    logout_user()
+    return redirect(url_for('login'))
 
 ##DASHBOARD ROUTE
 # This is the main dashboard that shows statistics about a stakeholder or company
