@@ -229,6 +229,7 @@ def log_out():
 ##DASHBOARD ROUTE
 # This is the main dashboard that shows statistics about a stakeholder or company
 @app.route('/dashboard', methods=['GET', 'POST'])
+@login_required
 def dashboard():
     users = User.query.all()
     projects = Project.query.all()
@@ -250,6 +251,21 @@ def dashboard():
                                     'titles': [project.title for project in projects]},
     }
     return render_template('dashboard.html', projects=projects, users=users, tickets=tickets, statistics=statistics)
+
+# This route is called when a user is assigning a project for a new ticket or an edited ticket
+@app.route('/api/graph-data', methods=['GET'])
+def get_graph_data():
+    projects = Project.query.all()
+    graph_data = {
+        'priority_project_pie': [Project.query.filter_by(priority='Urgent').count(),
+                                 Project.query.filter_by(priority='High').count(),
+                                 Project.query.filter_by(priority='Medium').count(),
+                                 Project.query.filter_by(priority='Low').count()],
+        'distribution_bar_data': distribution_list(projects),
+        'ticket_distribution_pie': {"data": [len(project.tickets) for project in projects],
+                                    'titles': [project.title for project in projects]},
+    }
+    return jsonify(graphData=graph_data)
 
 def distribution_list(projects):
     users_list = []

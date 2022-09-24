@@ -295,11 +295,6 @@
 
 {% block script %}
     <script>
-        var priorityProjectData = {{statistics['priority_project_pie']}};
-        var distributionBarData = {{statistics['distribution_bar_data']}};
-        var ticketDistributionPieData = {{statistics['ticket_distribution_pie']['data']}};
-        var ticketDistributionTitles = ['{{statistics['ticket_distribution_pie']['titles'][0]}}', '{{statistics['ticket_distribution_pie']['titles'][1]}}',
-            '{{statistics['ticket_distribution_pie']['titles'][2]}}', '{{statistics['ticket_distribution_pie']['titles'][3]}}', '{{statistics['ticket_distribution_pie']['titles'][4]}}'];
-        console.log(ticketDistributionTitles);
+
     </script>
 {% endblock script %}
