@@ -182,7 +182,7 @@
                                 <h5 class="modal-title" id="assignRoleModalLabel">Assign a Role</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                               </div>
-                              <form method="post" action="{{ url_for('add_team_member', project_id=1) }}">
+                              <form method="post" action="{{ url_for('add_team_member', project_id=project.id) }}">
                                 <div class="modal-body">
 
                                     <div class="mb-3">
@@ -193,8 +193,8 @@
                                         <label for="role" class="form-label">Role</label>
                                         <select class="form-select" aria-label="Default select example" id="role" name="role" required>
                                           <option selected>Developer</option>
-                                          <option value="High">User</option>
-                                          <option value="Medium">Submitter</option>
+                                          <option value="User">User</option>
+                                          <option value="Submitter">Submitter</option>
                                         </select>
                                     </div>
                                   </div>

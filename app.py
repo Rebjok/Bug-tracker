@@ -1,11 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
+from sqlalchemy import and_
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_ckeditor import CKEditor
 import os
 import datetime
+import json
 
 ## INITIALIZE WEB APP
 app = Flask(__name__)
@@ -231,8 +233,45 @@ def dashboard():
     users = User.query.all()
     projects = Project.query.all()
     tickets = Ticket.query.all()
-    return render_template('dashboard.html', projects=projects, users=users, tickets=tickets)
+    statistics = {
+        'active_projects': Project.query.filter_by(status='Active').count(),
+        'total_tickets': Ticket.query.count(),
+        'unassigned_tickets': Ticket.query.filter_by(developer=None).count(),
+        'new_members': User.query.count(),
+        'total_members': User.query.count(),
+        'tickets_in_development': Ticket.query.filter(and_(Ticket.status != 'Resolved', Ticket.status != 'Archived')).count(),
+        'total_developers': User.query.count(),
+        'priority_project_pie': [Project.query.filter_by(priority='Urgent').count(),
+                                 Project.query.filter_by(priority='High').count(),
+                                 Project.query.filter_by(priority='Medium').count(),
+                                 Project.query.filter_by(priority='Low').count()],
+        'distribution_bar_data': distribution_list(projects),
+        'ticket_distribution_pie': {"data":[len(project.tickets) for project in projects],
+                                    'titles': [project.title for project in projects]},
+    }
+    return render_template('dashboard.html', projects=projects, users=users, tickets=tickets, statistics=statistics)
 
+def distribution_list(projects):
+    users_list = []
+    developers = []
+    pms = []
+    distribution_list = []
+    for project in projects:
+        users_num = 0
+        devs = 0
+        pm = 1
+        for member in project.team:
+            if member.role == 'User':
+                users_num += 1
+            elif member.role == 'Developer':
+                devs += 1
+        users_list.append(users_num)
+        developers.append(devs)
+        pms.append(pm)
+    distribution_list.append(users_list)
+    distribution_list.append(developers)
+    distribution_list.append(pms)
+    return distribution_list
 
 ##NOTIFICATION CENTER ROUTE
 # This page displays all the current users notifications

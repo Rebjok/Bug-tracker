@@ -14,17 +14,19 @@
     type: 'pie',
     data: {
       labels: [
+        'Urgent',
         'High',
         'Medium',
         'Low'
       ],
       datasets: [{
         label: 'My First Dataset',
-        data: [300, 50, 100],
+        data: priorityProjectData,
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
-          'rgb(255, 205, 86)'
+          'rgb(255, 205, 86)',
+          'rgba(75, 192, 192, 1)'
         ],
         hoverOffset: 4
       }]
@@ -51,10 +53,10 @@
     const barChart = new Chart(distributionBar, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'],
             datasets: [{
-                label: 'DataSet 1',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'Users',
+                data: distributionBarData[0],
                 backgroundColor: [
                     'rgba(255, 99, 132, 1)',
                     'rgba(255, 99, 132, 1)',
@@ -66,8 +68,8 @@
                 stack: 'Stack 0'
             },
             {
-                label: 'DataSet 2',
-                data: [9, 10, 20, 2, 5, 8],
+                label: 'Developers',
+                data: distributionBarData[1],
                 backgroundColor: [
                     'rgba(54, 162, 235, 1)',
                     'rgba(54, 162, 235, 1)',
@@ -79,8 +81,8 @@
                 stack: 'Stack 0'
             },
             {
-                label: 'DataSet 3',
-                data: [3, 2, 5, 3, 19, 12],
+                label: 'Project Managers',
+                data: distributionBarData[2],
                 backgroundColor: [
                     'rgba(255, 206, 86, 1)',
                     'rgba(255, 206, 86, 1)',
@@ -121,18 +123,18 @@
       const distributionPieChart = new Chart(distributionPie, {
         type: 'pie',
         data: {
-          labels: [
-            'High',
-            'Medium',
-            'Low'
-          ],
+          labels: ticketDistributionTitles,
           datasets: [{
             label: 'My First Dataset',
-            data: [300, 0, 0],
+            data: ticketDistributionPieData,
             backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)'
+              'rgba(255, 99, 132, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(255, 205, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(201, 203, 207, 1)'
             ],
             hoverOffset: 4
           }]

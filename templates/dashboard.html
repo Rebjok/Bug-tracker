@@ -24,7 +24,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-6">
                                             <h5 class="text-muted fw-normal mt-0 text-wrap" title="Active Projects">Active Projects</h5>
-                                            <h3 class="my-2 py-1">0</h3>
+                                            <h3 class="my-2 py-1">{{statistics.active_projects}}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -37,7 +37,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-6">
                                             <h5 class="text-muted fw-normal mt-0 text-wrap" title="Total Tickets">Total Tickets</h5>
-                                            <h3 class="my-2 py-1">8</h3>
+                                            <h3 class="my-2 py-1">{{statistics.total_tickets}}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-6">
                                             <h5 class="text-muted fw-normal mt-0" title="Unassigned Tickets">Unassigned Tickets</h5>
-                                            <h3 class="my-2 py-1">2</h3>
+                                            <h3 class="my-2 py-1">{{statistics.unassigned_tickets}}</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -79,25 +79,25 @@
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item mb-2 mt-2">
                                             <i class="fa-solid fa-user mb-1"></i>
-                                            <h6>New Users</h6>
-                                            <h7>0</h7>
+                                            <h6>New Members</h6>
+                                            <h7>{{statistics.new_members}}</h7>
                                     </li>
                                     <li class="list-group-item my-2">
                                         <i class="fa-solid fa-users"></i>
                                         <div class="col">
-                                            <h6>Total Users</h6>
-                                            <h7>1</h7>
+                                            <h6>Total Members</h6>
+                                            <h7>{{statistics.total_members}}</h7>
                                         </div>
                                     </li>
                                     <li class="list-group-item my-2">
                                         <i class="fa-regular fa-ticket"></i>
                                         <h6>Tickets In Development</h6>
-                                        <h7>0</h7>
+                                        <h7>{{statistics.tickets_in_development}}</h7>
                                     </li>
                                     <li class="list-group-item my-2">
                                         <i class="fa-regular fa-code"></i>
                                         <h6>Total Developers</h6>
-                                        <h7>0</h7>
+                                        <h7>{{statistics.total_developers}}</h7>
                                     </li>
                                 </ul>
                             </div>
@@ -292,3 +292,14 @@
             </div>
             <!-- content -->
 {% endblock %}
+
+{% block script %}
+    <script>
+        var priorityProjectData = {{statistics['priority_project_pie']}};
+        var distributionBarData = {{statistics['distribution_bar_data']}};
+        var ticketDistributionPieData = {{statistics['ticket_distribution_pie']['data']}};
+        var ticketDistributionTitles = ['{{statistics['ticket_distribution_pie']['titles'][0]}}', '{{statistics['ticket_distribution_pie']['titles'][1]}}',
+            '{{statistics['ticket_distribution_pie']['titles'][2]}}', '{{statistics['ticket_distribution_pie']['titles'][3]}}', '{{statistics['ticket_distribution_pie']['titles'][4]}}'];
+        console.log(ticketDistributionTitles);
+    </script>
+{% endblock script %}
