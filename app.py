@@ -307,8 +307,9 @@ def ticket_dashboard():
 # This page displays details for a specific ticket
 @app.route('/ticket-details/<ticket_id>', methods=['GET'])
 def ticket_details(ticket_id):
+    users = User.query.all()
     ticket = Ticket.query.filter_by(id=ticket_id).first()
-    return render_template('ticket-details.html', ticket=ticket)
+    return render_template('ticket-details.html', ticket=ticket, users=users)
 
 
 # This page displays a form to edit a ticket or create a new one
@@ -342,6 +343,18 @@ def search_ticket():
     print(json_data)
     return jsonify(message="Success")
 
+# This route changes a tickets's developer
+@app.route('/change-dev/<ticket_id>/<user_id>', methods=['GET'])
+def change_dev(ticket_id, user_id):
+    ticket = Ticket.query.filter_by(id=ticket_id).first()
+    user = User.query.filter_by(id=user_id).first()
+    if ticket and user:
+        ticket.developer_id = user.id
+        db.session.commit()
+        return redirect(url_for('ticket_details', ticket_id=ticket_id))
+    else:
+        flash("Either the project or the user do not exist")
+        return redirect(url_for('ticket_details', ticket_id=ticket_id))
 
 ## PROJECT ROUTES
 # This page displays  all projects in a list

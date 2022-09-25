@@ -45,12 +45,61 @@
           <div class="card mb-4">
               <div class="card-body">
                 <h5 class="card-title">Ticket Developer</h5>
-                <div class="col">
+                {% if ticket.developer %}
+                  <div class="col">
+                      <div class="card px-5 border h-100 mb-2">
+                        <div class="card-body">
+                          <div class="col">
+                              <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                              <div  class="row">
+                                  <h3>{{ticket.developer.name}}</h3>
+                                  <small>Developer</small>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                {% else %}
                   <i class="fa-solid fa-user"></i>
                   <div class="col">
                       <h4>Unassigned</h4>
-                      <button class="btn btn-primary">Assign PM</button>
+                      <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#assignDeveloperModal">Assign Developer</button>
                   </div>
+                  {% endif %}
+                      <!-- Assign Project Manager Modal -->
+                      <div class="modal fade" id="assignDeveloperModal" tabindex="-1" aria-labelledby="devModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="devModalLabel">Please select a Project Manager</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                  <table class="table table-hover">
+                                        <thead class="thead-dark">
+                                          <tr>
+                                            <th scope="col">Id</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Username</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          {% for user in users %}
+                                          <tr onclick="window.location.href='{{ url_for('change_dev', ticket_id=ticket.id, user_id=user.id) }}';">
+                                            <td>{{user.id}}</td>
+                                            <td>{{user.name}}</td>
+                                            <td>{{user.username}}</td>
+                                          </tr>
+                                          {% endfor %}
+                                        </tbody>
+                                  </table>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Select</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                 </div>
               </div>
           </div>
@@ -91,6 +140,7 @@
                 <h5 class="card-title">Manage Ticket</h5>
                 <p>Manage your participation ticket</p>
                 <div>
+                    <button class="btn btn-primary">Finish</button>
                     <button class="btn btn-secondary">Withdraw</button>
                     <button class="btn btn-danger">Delete <i class="fa-solid fa-trash"></i></button>
                 </div>
