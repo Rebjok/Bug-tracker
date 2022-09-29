@@ -58,6 +58,8 @@ class User(UserMixin, db.Model):
     # This will act like a List of team member objects attached to each Project.
     # The "project" refers to the project property in the Ticket class.
     team = relationship("Team", back_populates="user")
+    #relationship with company
+    company = relationship("Company", back_populates='admin')
 
 
 class Project(db.Model):
@@ -127,6 +129,12 @@ class Team(db.Model):
 class Company(db.Model):
     __tablename__ = 'companies'
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), nullable=False)
+    #Relationship with user/admin
+    admin_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    admin = relationship('User', back_populates='company')
     # Realtionship with projects
     projects = relationship("Project", back_populates="company")
 
@@ -174,6 +182,31 @@ def register():
     else:
         return render_template('register.html')
 
+#This method registers a business account
+@app.route('/register-business', methods=['POST', 'GET'])
+def register_business():
+    if request.method == "POST":
+        companyName = request.form['companyName']
+        companyUsername = request.form['companyUsername']
+        companyEmail = request.form['companyEmail']
+        adminUsername = request.form['adminUsername']
+        admin_id = User.query.filter_by(username=adminUsername).first().id
+        company = Company(name=companyName, username=companyUsername, email=companyEmail, admiin_id=admin_id)
+        db.session.add(company)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+    return render_template('register-business.html')
+
+#This method updates the user table when selecting a business admin
+@app.route('/search-admin', methods=['POST'])
+def search_admin():
+    username = request.data.decode('UTF-8')
+    users = User.query.filter(User.username.contains(username))
+    users_list = []
+    for user in users[:5]:
+        details = [user.id, user.username, user.name]
+        users_list.append(details)
+    return jsonify(users=users_list)
 
 ## LOGIN ROUTES
 # This route is called when a legitimate user is logging in
@@ -313,8 +346,8 @@ def ticket_details(ticket_id):
 
 
 # This page displays a form to edit a ticket or create a new one
-@app.route('/ticket/<action>', methods=['GET', 'POST'])
-def modify_ticket(action):
+@app.route('/ticket/<isNew>', methods=['GET', 'POST'])
+def modify_ticket(isNew):
     if request.method == 'POST':
         title = request.form['title']
         description = request.form['ckeditor']
@@ -325,15 +358,25 @@ def modify_ticket(action):
         priority = request.form['priority']
         status = request.form['status']
         developer = request.form['developer']
-        ticket = Ticket(title=title, description=description, project_id=project, start_date=start_date,
-                        deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
-        db.session.add(ticket)
-        db.session.commit()
-        return redirect(url_for('ticket_details',ticket_id=ticket.id))
+        if isNew:
+            ticket = Ticket(title=title, description=description, project_id=project, start_date=start_date,
+                            deadline=deadline, type=ticketType, priority=priority, status=status, developer_id=developer)
+            db.session.add(ticket)
+            db.session.commit()
+            return redirect(url_for('ticket_details',ticket_id=ticket.id))
+        else:
+            #Do something
+            return redirect('ticket_dashboard')
     else:
-        users = User.query.all()
-        projects = Project.query.all()
-        return render_template('modify-ticket.html', action=action, users=users, projects=projects)
+        if isNew:
+            users = User.query.all()
+            projects = Project.query.all()
+            return render_template('modify-ticket.html', isNew=isNew, users=users, projects=projects)
+        else:
+            print('isNew')
+            ticket_id = request.args.get('ticket_id')
+            print(ticket_id)
+            return redirect('ticket_dashboard')
 
 
 # This route is called when a user is assigning a project for a new ticket or an edited ticket
@@ -608,6 +651,10 @@ def view_user_profile(user_id):
     user = User.query.filter_by(id=user_id).first()
     return render_template('user-page.html', user=user)
 
+#This route redirects to the 404 page
+@app.route('/404', methods=['GET'])
+def page_not_found():
+    return render_template('404.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

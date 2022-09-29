@@ -33,7 +33,7 @@
                   <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
                     {{ticket.deadline}}</th>
                   <th scope="col">
-                      <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square" onclick="window.location.href='{{ url_for('modify_ticket', action='edit') }}';"></i></button>
+                      <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square" onclick="window.location.href='{{ url_for('modify_ticket', isNew=False) }}';"></i></button>
                       <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                   </th>
                 </tr>
@@ -48,7 +48,7 @@
             <div class="h-100 p-5 text-bg-light rounded-3">
               <h2>New Ticket</h2>
               <p>Create a new Ticket</p>
-              <button class="btn btn-primary" type="button" onclick="window.location.href='{{ url_for('modify_ticket', action='new') }}';">New</button>
+              <button class="btn btn-primary" type="button" onclick="window.location.href='{{ url_for('modify_ticket', isNew=True) }}';">New</button>
             </div>
           </div>
           <div class="col-md-6">

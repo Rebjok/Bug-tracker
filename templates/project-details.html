@@ -228,14 +228,14 @@
                   </thead>
                   <tbody>
                     {% for ticket in project.tickets %}
-                    <tr onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">
-                      <th scope="col">{{ticket.title}}</th>
-                      <th scope="col">{{ticket.developer.name}}</th>
-                      <th scope="col">{{ticket.status}}</th>
-                      <th scope="col">{{ticket.priority}}</th>
-                      <th scope="col">{{ticket.start_date}}</th>
+                    <tr>
+                      <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">{{ticket.title}}</th>
+                      <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">{{ticket.developer.name}}</th>
+                      <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">{{ticket.status}}</th>
+                      <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">{{ticket.priority}}</th>
+                      <th scope="col" onclick="window.location.href='{{ url_for('ticket_details', ticket_id=ticket.id) }}';">{{ticket.start_date}}</th>
                       <th scope="col">
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
+                          <button class="btn btn-outline-primary" onclick="window.location.href='{{url_for('modify_ticket', isNew=False)}}';"><i class="fa-solid fa-pen-to-square"></i></button>
                           <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                       </th>
                     </tr>
@@ -265,7 +265,6 @@
                       <th scope="col">{{ticket.priority}}</th>
                       <th scope="col">{{ticket.start_date}}</th>
                       <th scope="col">
-                          <button class="btn btn-outline-primary"><i class="fa-solid fa-pen-to-square"></i></button>
                           <button class="btn btn-outline-primary"><i class="fa-solid fa-trash"></i></button>
                       </th>
                     </tr>

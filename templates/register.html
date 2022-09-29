@@ -42,12 +42,14 @@
               <div class="form-floating mb-3">
                   <select class="form-select" aria-label="Default select example" name="account-type">
                     <option value="Individual" selected>Individual</option>
-                    <option value="Bussiness">Business</option>
                     <option value="Demo">Demo</option>
                   </select>
               </div>
+              <div class="form-floating mb-3">
+                <small class="text-muted">Are you a business? <a href="{{ url_for('register_business') }}">Register for a Business account</a></small>
+              </div>
               <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">Register</button>
-              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-outline-secondary" type="submit" onclick="window.location.href='{{ url_for('login') }}';">Cancel</button>
+              <button class="w-100 mb-2 btn btn-lg rounded-3 btn-outline-secondary" type="button" onclick="window.location.href='{{ url_for('login') }}';">Cancel</button>
 
             </form>
           </div>

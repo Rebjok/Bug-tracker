@@ -7,7 +7,7 @@
                 <h1>{{action|capitalize}} Ticket</h1>
               </div>
             <div class="modal-body p-5 pt-0">
-                <form method="post" action="{{ url_for('modify_ticket', action='new') }}">
+                <form method="post" action="{{ url_for('modify_ticket', isNew=True) }}">
                   <div class="mb-3">
                     <label for="ticketTitle" class="form-label">Title</label>
                     <input type="text" class="form-control" id="ticketTitle" name="title" placeholder="Ticket title" required>
